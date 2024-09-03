@@ -11,6 +11,7 @@
   <ItemGroup>
     <Folder Include="src\data\" />
     <Folder Include="src\Database\" />
+    <Folder Include="src\HardwareImplementation\" />
     <Folder Include="src\Services\" />
   </ItemGroup>
 
