@@ -4,7 +4,7 @@ namespace ATM_Machine.HardwareInterface;
 
 public interface ICashDispenser
 {
-    bool DispenseCash(int amount);
-    bool ReceiveCash(Dictionary<CurrencyDenomination, int> cashReceived);
+     bool DispenseCash(int amount);
+     bool ReceiveCash(Dictionary<CurrencyDenomination, int> cashReceived);
 
 }

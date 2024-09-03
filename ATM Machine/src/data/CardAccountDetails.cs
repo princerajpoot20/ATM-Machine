@@ -13,7 +13,8 @@ namespace ATM_Machine.src.data
 
         private const string _accountDetailsPath =
             @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\account_details.csv";
-
+        private const string _cashStoragePath =
+            @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\cash_storage.csv";
 
         public static bool VerifyCardDetails(Card card)
         {
@@ -86,6 +87,32 @@ namespace ATM_Machine.src.data
             return;
         }
 
+        public static void UpdateAccount(Account account)
+        {
+            foreach (var line in File.ReadAllLines(_accountDetailsPath))
+            {
+                var data = line.Split(',');
+                if (data[0] == account.AccountNumber)
+                {
+
+                    // Need to write logic to update the csv for account
+                    data[2] = account.MobileNumber;
+                    data[3] = account.Balance.ToString();
+
+                    return;
+                }
+            }
+        }
+
+        public static void UpdatePin(Account account, int newPin)
+        {
+            Console.WriteLine("Need to implement this");
+        }
+
+        public static void UpdateMobileNumber(Account account, string newMobileNumber)
+        {
+            Console.WriteLine("Need to implement this");
+        }
     }
     
 }
