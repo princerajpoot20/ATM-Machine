@@ -4,17 +4,19 @@ namespace ATM_Machine.src.data;
 
 public class CardAccountDetails
 {
-    private const string _cardDetailsPath = @"data/card_details.csv";
-    private const string _cardAccountMappingPath = @"data/card_account_mapping.csv";
-    private const string _accountDetailsPath = @"data/account_details.csv";
+    private const string _cardDetailsPath = @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\card_details.csv";
+    private const string _cardAccountMappingPath = @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\card_account_mapping.csv";
+    private const string _accountDetailsPath = @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\account_details.csv";
+        
 
-    public bool VerifyCardDetails(string cardNumber, int pin)
+    public static bool VerifyCardDetails(Card card)
     {
         var lines = File.ReadAllLines(_cardDetailsPath);
+        lines = lines.Skip(1).ToArray();
         foreach (var line in lines)
         {
             var data = line.Split(',');
-            if (data[0] == cardNumber && Convert.ToInt32(data[1]) == pin)
+            if (data[0] == card.CardNumber && Convert.ToInt32(data[1]) == card.Pin)
             {
                 Console.WriteLine("Card Details verified Successfully!! :)");
                 return true;
@@ -24,13 +26,13 @@ public class CardAccountDetails
         Console.WriteLine("Verification failed :(");
         return false;
     }
-    public string GetAccountNumber(string cardNumber)
+    public static string GetAccountNumber(Card card)
     {
         var lines= File.ReadAllLines(_cardAccountMappingPath);
         foreach(var line in lines)
         {
             var data = line.Split(',');
-            if(data[0] == cardNumber)
+            if(data[0] == card.CardNumber)
             {
                 return data[1];
             }
@@ -38,7 +40,7 @@ public class CardAccountDetails
 
         return null;
     }
-    public Account GetAccountDetailsByAccountNumber(string accountNumber)
+    public static Account GetAccountDetailsByAccountNumber(string accountNumber)
     {
         var lines= File.ReadAllLines(_accountDetailsPath);
         foreach(var line in lines)
