@@ -1,6 +1,6 @@
 ﻿namespace ATM_Machine.src.Models;
 
-public enum ATMState
+public enum AtmState
 {
     InService,
     OutOfService
