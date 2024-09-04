@@ -8,12 +8,13 @@ namespace ATM_Machine.UI;
 
 public class MainMenu
 {
-    private readonly ICardReader _card;
+    private readonly ICardReader _cardReader;
+    private  Card _card;
     private readonly AccountService _accountService;
     private Account _account;
-    public MainMenu(ICardReader card, AccountService accountService)
+    public MainMenu(ICardReader cardReader, AccountService accountService)
     {
-        _card = card;
+        _cardReader = cardReader;
         _accountService = accountService;
     }
     public void ShowMainMenu()
@@ -32,15 +33,16 @@ public class MainMenu
 
     public void UserMenu()
     {
-        Card card = _card.ReadCard();
-        bool isVerified = CardAccountDetails.VerifyCardDetails(card);
+        _card = _cardReader.ReadCard();
+        bool isVerified = CardAccountDetails.VerifyCardDetails(_card);
         if (!isVerified)
         {
             Console.WriteLine("Card authentication failed. :(");
             return;
         }
-        var accountNumber = CardAccountDetails.GetAccountNumber(card);
-        var _account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
+        var accountNumber = CardAccountDetails.GetAccountNumber(_card);
+        _account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
+        Console.Clear();
         Console.WriteLine("----------Welcome {0}!----------", _account.Name);
         Console.WriteLine("1. Withdraw Cash");
         Console.WriteLine("2. Deposit Cash");
@@ -77,6 +79,7 @@ public class MainMenu
     }
     public void ShowAccountServices()
     {
+        Console.Clear();
         Console.WriteLine("1. Change Pin");
         Console.WriteLine("2. Update Mobile Number");
         Console.WriteLine("3. Exit");
@@ -84,14 +87,10 @@ public class MainMenu
         switch (choice)
         {
             case 1:
-                Console.WriteLine("Enter New Pin: ");
-                var newPin = Convert.ToInt32(Console.ReadLine());
-                CardAccountDetails.UpdatePin(_account, newPin);
+                _accountService.PinChange(_card);
                 break;
             case 2:
-                Console.WriteLine("Enter New Mobile Number: ");
-                var newMobileNumber = Console.ReadLine();
-                CardAccountDetails.UpdateMobileNumber(_account, newMobileNumber);
+                _accountService.MobileChange(_account);
                 break;
             default:
                 Console.WriteLine("Invalid Choice");
@@ -101,7 +100,8 @@ public class MainMenu
 
     public void AdminMenu()
     {
-        Console.WriteLine("1. Refill Cash");
+        Console.Clear();
+        Console.WriteLine("11. Refill Cash");
         var choice = Convert.ToInt32(Console.ReadLine());
 
         switch (choice)

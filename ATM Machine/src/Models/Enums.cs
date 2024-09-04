@@ -13,3 +13,10 @@ public enum CurrencyDenomination
     TwoHundred= 200,
     FiveHundred=500
 }
+
+public enum TransactionType
+{
+    Debit,
+    Credit
+}
+

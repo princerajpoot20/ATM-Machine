@@ -1,4 +1,5 @@
 ﻿using ATM_Machine.src.Models;
+using System.Text;
 
 namespace ATM_Machine.src.data
 {
@@ -81,32 +82,57 @@ namespace ATM_Machine.src.data
 
             return 0;
         }
-        public static void UpdateCash()
-        {
-            Console.WriteLine("Need to write logic to update the csv for denomination");
-            return;
-        }
 
         public static void UpdateAccount(Account account)
         {
-            foreach (var line in File.ReadAllLines(_accountDetailsPath))
+            StringBuilder builder = new StringBuilder();
+
+            string line;
+            int updatedBalance = 0;
+            using (StreamReader reader = new StreamReader(_accountDetailsPath))
             {
-                var data = line.Split(',');
-                if (data[0] == account.AccountNumber)
+                while ((line = reader.ReadLine()) != null)
                 {
 
-                    // Need to write logic to update the csv for account
-                    data[2] = account.MobileNumber;
-                    data[3] = account.Balance.ToString();
-
-                    return;
+                    var data = line.Split(',');
+                    if (data[0] == account.AccountNumber)
+                    {
+                        line= account.AccountNumber + "," + account.Name + "," + account.MobileNumber + "," + account.Balance;
+                    }
+                    builder.AppendLine(line);
                 }
+
+            }
+            using (StreamWriter writer = new StreamWriter(_accountDetailsPath, false)) // false to overwrite the file
+            {
+                writer.Write(builder.ToString());
             }
         }
 
-        public static void UpdatePin(Account account, int newPin)
+        public static void UpdateCard(Card card)
         {
-            Console.WriteLine("Need to implement this");
+            StringBuilder builder = new StringBuilder();
+
+            string line;
+            int updatedBalance = 0;
+            using (StreamReader reader = new StreamReader(_cardDetailsPath))
+            {
+                while ((line = reader.ReadLine()) != null)
+                {
+
+                    var data = line.Split(',');
+                    if (data[0] == card.CardNumber)
+                    {
+                        line= card.CardNumber + "," + card.Pin;
+                    }
+                    builder.AppendLine(line);
+                }
+
+            }
+            using (StreamWriter writer = new StreamWriter(_cardDetailsPath, false)) // false to overwrite the file
+            {
+                writer.Write(builder.ToString());
+            }
         }
 
         public static void UpdateMobileNumber(Account account, string newMobileNumber)

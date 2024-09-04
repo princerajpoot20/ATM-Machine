@@ -25,19 +25,15 @@ public class CashDetails
         StringBuilder builder = new StringBuilder();
 
 
-        using (StreamReader reader = new StreamReader(_cashDetailsPath))
-        {
-            string line= CurrencyDenomination.Fifty.ToString() + "," + cash[CurrencyDenomination.Fifty];
-            builder.AppendLine(line);
-            line= CurrencyDenomination.OneHundred.ToString() + "," + cash[CurrencyDenomination.OneHundred];
-            builder.AppendLine(line);
-            line= CurrencyDenomination.TwoHundred.ToString() + "," + cash[CurrencyDenomination.TwoHundred];
-            builder.AppendLine(line);
-            line= CurrencyDenomination.FiveHundred.ToString() + "," + cash[CurrencyDenomination.FiveHundred];
-            builder.AppendLine(line);
-           
-            
-        }
+        string line= CurrencyDenomination.Fifty.ToString() + "," + cash[CurrencyDenomination.Fifty];
+        builder.AppendLine(line);
+        line= CurrencyDenomination.OneHundred.ToString() + "," + cash[CurrencyDenomination.OneHundred];
+        builder.AppendLine(line);
+        line= CurrencyDenomination.TwoHundred.ToString() + "," + cash[CurrencyDenomination.TwoHundred];
+        builder.AppendLine(line);
+        line= CurrencyDenomination.FiveHundred.ToString() + "," + cash[CurrencyDenomination.FiveHundred];
+        builder.AppendLine(line);
+
 
         using (StreamWriter writer = new StreamWriter(_cashDetailsPath, false)) // false to overwrite the file
         {
