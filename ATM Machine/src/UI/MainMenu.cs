@@ -12,15 +12,31 @@ public class MainMenu
     private  Card _card;
     private readonly AccountService _accountService;
     private Account _account;
-    public MainMenu(ICardReader cardReader, AccountService accountService)
+    private ATM _atm;
+    private AdminServices _adminServices;
+    public MainMenu(ICardReader cardReader, AccountService accountService, ATM atm)
     {
         _cardReader = cardReader;
         _accountService = accountService;
+        _atm = atm;
     }
     public void ShowMainMenu()
     {
         Console.WriteLine("-----------Welcome to ATM Machine-------------");
         Console.WriteLine("           ======================              ");
+
+        if(_atm.atmState == AtmState.OutOfService)
+        {
+            Console.WriteLine("Sorry!! ATM is Out of Service");
+            Console.WriteLine("Hope to see you again! :)");
+            Console.WriteLine("Press Enter to exit");
+            ConsoleKeyInfo adminRedirect = Console.ReadKey();
+            if(adminRedirect.Key == ConsoleKey.Escape)
+            {
+                AdminMenu();
+            }
+            return;
+        }
         Console.WriteLine("\nPress Enter to continue");
 
         ConsoleKeyInfo keyInfo = Console.ReadKey();
@@ -101,25 +117,33 @@ public class MainMenu
     public void AdminMenu()
     {
         Console.Clear();
-        Console.WriteLine("11. Refill Cash");
+        Console.WriteLine("----WWelcome to Admin Panel");
+        Console.WriteLine("Enter your admin id:");
+        var adminId = Console.ReadLine();
+        Console.WriteLine("Enter your password:");
+        var password = Convert.ToInt32(Console.ReadLine());
+        _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));
+        if (_adminServices == null)
+        {
+            Console.WriteLine("Authentication failed");
+            return;
+        }
+
+        Console.WriteLine("Authentication Successful");
+        Console.WriteLine("1. Refill Cash");
+        Console.WriteLine("2. Change ATM Service State");
         var choice = Convert.ToInt32(Console.ReadLine());
 
         switch (choice)
         {
             case 1:
-                Console.WriteLine("----Welcome to Admin Pannel-----");
-                Console.WriteLine("Enter your admin id:");
-                var adminId = Console.ReadLine();
-                Console.WriteLine("Enter your password:");
-                var password = Convert.ToInt32(Console.ReadLine());
-                AdminServices adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));
-                if(adminServices == null)
-                {
-                    Console.WriteLine("Authentication failed");
-                    return;
-                }
-                adminServices.UpdateCashStorage();
+                
+                _adminServices.UpdateCashStorage();
                 break;
+            case 2:
+                _adminServices.SetAtmState(_atm);
+                break;
+
             default:
                 Console.WriteLine("Invalid Choice");
                 break;

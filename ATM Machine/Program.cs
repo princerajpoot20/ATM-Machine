@@ -62,7 +62,7 @@ class Program
         //    Console.WriteLine("Authentication failed");
 
         //}
-        MainMenu mainMenu = new MainMenu(new CardReader(), new AccountService());
+        MainMenu mainMenu = new MainMenu(new CardReader(), new AccountService(), ATM.getAtmInstance(123));
         mainMenu.ShowMainMenu();
     }
 }

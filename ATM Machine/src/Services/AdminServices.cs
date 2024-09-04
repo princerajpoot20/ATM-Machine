@@ -30,11 +30,27 @@ public class AdminServices
         }
         return null;
     }
-    public void SetAtmState(AtmState state)
+    public void SetAtmState(ATM atm)
     {
         //CurrentAtmState.SetAtmService(state);
         // Need to display a constant screen on the display. Need to implement this!!
-        Console.WriteLine("Atm state is now: "+ state);
+        Console.WriteLine("Currently Atm state is now: "+ atm.atmState);
+        Console.WriteLine("Do you want to change?");
+        Console.WriteLine("Press Enter for YES, otherwise press any key");
+        ConsoleKeyInfo keyInfo = Console.ReadKey();
+        if (keyInfo.Key == ConsoleKey.Enter)
+        {
+            if(atm.atmState == AtmState.OutOfService)
+            {
+                atm.atmState = AtmState.InService;
+            }
+            else
+            {
+                atm.atmState = AtmState.OutOfService;
+            }
+            Console.WriteLine("Atm state changed to: "+ atm.atmState);
+            AtmDetails.updateAtmDetails(atm);
+        }
     }
     public void UpdateCashStorage()
     {
