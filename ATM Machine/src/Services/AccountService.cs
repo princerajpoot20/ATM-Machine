@@ -36,9 +36,12 @@ namespace ATM_Machine.src.Services
             return false;
         }
 
-        public void Deposit(Account account, int depositAmount)
+        public void Deposit(Account account)
         {
-            Console.WriteLine("Need to implement deposit");
+            int amount= _cashDispenser.ReceiveCash();
+
+
+            Console.WriteLine("---Cash Deposit Successful---");
         }
     }
 }

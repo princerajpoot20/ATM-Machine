@@ -81,7 +81,7 @@ namespace ATM_Machine.src.data
 
             return 0;
         }
-        public static void UpdateCash(CurrencyDenomination denomination, int count)
+        public static void UpdateCash()
         {
             Console.WriteLine("Need to write logic to update the csv for denomination");
             return;

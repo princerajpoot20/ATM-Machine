@@ -1,4 +1,5 @@
-﻿using ATM_Machine.HardwareInterface;
+﻿using System.Threading.Channels;
+using ATM_Machine.HardwareInterface;
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
@@ -17,13 +18,23 @@ public class MainMenu
     }
     public void ShowMainMenu()
     {
-        Console.WriteLine("----------------------------------------------");
         Console.WriteLine("-----------Welcome to ATM Machine-------------");
-        Console.WriteLine("----------------------------------------------");
+        Console.WriteLine("           ======================              ");
+        Console.WriteLine("\nPress Enter to continue");
 
-        Card card= _card.ReadCard();
+        ConsoleKeyInfo keyInfo = Console.ReadKey();
+        if (keyInfo.Key == ConsoleKey.Enter)
+            UserMenu();
+        if(keyInfo.Key == ConsoleKey.Escape)
+            AdminMenu();
+        
+    }
+
+    public void UserMenu()
+    {
+        Card card = _card.ReadCard();
         bool isVerified = CardAccountDetails.VerifyCardDetails(card);
-        if(!isVerified)
+        if (!isVerified)
         {
             Console.WriteLine("Card authentication failed. :(");
             return;
@@ -43,26 +54,21 @@ public class MainMenu
             case 1:
                 Console.WriteLine("Enter Amount to withdraw: ");
                 var amount = Convert.ToInt32(Console.ReadLine());
-                AccountService accountService = new AccountService();
-                accountService.Withdraw(_account, amount);
+
+                _accountService.Withdraw(_account, amount);
                 break;
             case 2:
-                Console.WriteLine("Enter Amount to deposit: ");
-                var depositAmount = Convert.ToInt32(Console.ReadLine());
-                AccountService accountService1 = new AccountService();
-                accountService1.Deposit(_account, depositAmount);
+                //Console.WriteLine("Enter Amount to deposit: ");
+                //var depositAmount = Convert.ToInt32(Console.ReadLine());
+                _accountService.Deposit(_account);
                 break;
             case 3:
-                AccountService accountService2 = new AccountService();
-                var balance = accountService2.CheckBalance(_account);
+                var balance = _accountService.CheckBalance(_account);
                 Console.WriteLine("Your Balance is: {0}", balance);
                 break;
             case 4:
                 Console.WriteLine("Account Services");
                 ShowAccountServices();
-                break;
-            case 9:
-                AdminMenu();
                 break;
             default:
                 Console.WriteLine("Invalid Choice");
@@ -96,5 +102,28 @@ public class MainMenu
     public void AdminMenu()
     {
         Console.WriteLine("1. Refill Cash");
+        var choice = Convert.ToInt32(Console.ReadLine());
+
+        switch (choice)
+        {
+            case 1:
+                Console.WriteLine("----Welcome to Admin Pannel-----");
+                Console.WriteLine("Enter your admin id:");
+                var adminId = Console.ReadLine();
+                Console.WriteLine("Enter your password:");
+                var password = Convert.ToInt32(Console.ReadLine());
+                AdminServices adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));
+                if(adminServices == null)
+                {
+                    Console.WriteLine("Authentication failed");
+                    return;
+                }
+                adminServices.UpdateCashStorage();
+                break;
+            default:
+                Console.WriteLine("Invalid Choice");
+                break;
     }
+}
+
 }
