@@ -4,6 +4,7 @@ using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
 using ATM_Machine.src.UI;
+using ATM_Machine.src.Utils;
 
 namespace ATM_Machine.UI { 
 public class MainMenu
@@ -36,6 +37,7 @@ public class MainMenu
             {
                 AdminUI.AdminMenu(_atm);
             }
+
             return;
         }
         Screen.DisplayHighlitedText("\nPress Enter to continue");
@@ -75,9 +77,9 @@ public class MainMenu
         {
             case 1:
                 Console.WriteLine("Enter Amount to withdraw: ");
-                var amount = Convert.ToInt32(Console.ReadLine());
-
-                _accountService.Withdraw(_account, amount);
+                bool isValid = InputValidator.ReadInteger(out int amount, 0);
+                if(isValid)
+                    _accountService.Withdraw(_account, amount);
                 break;
             case 2:
                 //Console.WriteLine("Enter Amount to deposit: ");

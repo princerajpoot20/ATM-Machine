@@ -1,6 +1,7 @@
 ﻿using ATM_Machine.HardwareImplementation;
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
+using ATM_Machine.src.Utils;
 
 namespace ATM_Machine.src.Services
 {
@@ -8,6 +9,7 @@ namespace ATM_Machine.src.Services
     {
         private CashDispenser _cashDispenser= new CashDispenser();
         private Keypad _keypad= new Keypad();
+        private Card _card;
 
 
         internal int CheckBalance(Account account)
@@ -44,8 +46,8 @@ namespace ATM_Machine.src.Services
         internal void Deposit(Account account)
         {
             int amount= _cashDispenser.ReceiveCash();
-
-            if(amount == 0)
+            if (amount == -1) return;
+            if(amount == 0 )
             {
                 Console.WriteLine("No cash deposited");
                 return;
@@ -58,7 +60,8 @@ namespace ATM_Machine.src.Services
         internal void PinChange(Card card)
         {
             Console.WriteLine("Please Enter your new Pin");
-            var newPin = Convert.ToInt32(_keypad.ReadKeyPad());
+            bool isValidInput = InputValidator.ReadInteger(out int newPin, 1000, 9999);
+            if(!isValidInput) return;
             card.Pin = newPin;
             CardAccountDetails.UpdateCard(card);
             Console.WriteLine("Pin Change Successfully");
