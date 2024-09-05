@@ -8,6 +8,7 @@ namespace ATM_Machine.src.Services
     public class AccountService
     {
         private CashDispenser _cashDispenser= new CashDispenser();
+        private Keypad _keypad= new Keypad();
 
 
         public int CheckBalance(Account account)
@@ -28,7 +29,12 @@ namespace ATM_Machine.src.Services
             {
                 account.Balance -= amount;
                 CardAccountDetails.UpdateAccount(account);
-                Console.WriteLine("Withdrawn {0}. Remaining Balance: {1}", amount, account.Balance);
+                Console.WriteLine("----Balance Update Successfully----");
+                Console.WriteLine("Press Enter to Display the updated balance");
+                Console.WriteLine("Press any key to continue");
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Enter)
+                    Console.WriteLine("---Your Updated Balance is: {0}", account.Balance);
                 return true;
             }
 
@@ -36,9 +42,36 @@ namespace ATM_Machine.src.Services
             return false;
         }
 
-        public void Deposit(Account account, int depositAmount)
+        public void Deposit(Account account)
         {
-            Console.WriteLine("Need to implement deposit");
+            int amount= _cashDispenser.ReceiveCash();
+
+            if(amount == 0)
+            {
+                Console.WriteLine("No cash deposited");
+                return;
+            }
+            account.Balance += amount;
+            CardAccountDetails.UpdateAccount(account);
+            Console.WriteLine("---Cash Deposit Successful---");
+        }
+
+        public void PinChange(Card card)
+        {
+            Console.WriteLine("Please Enter your new Pin");
+            var newPin = Convert.ToInt32(_keypad.ReadKeyPad());
+            card.Pin = newPin;
+            CardAccountDetails.UpdateCard(card);
+            Console.WriteLine("Pin Change Successfully");
+
+        }
+        public void MobileChange(Account account)
+        {
+            Console.WriteLine("Please Enter your new Mobile Number");
+            var newMobile = _keypad.ReadKeyPad();
+            account.MobileNumber = newMobile;
+            CardAccountDetails.UpdateAccount(account);
+            Console.WriteLine("Mobile Number Updated Successfully");
         }
     }
 }
