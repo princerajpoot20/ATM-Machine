@@ -11,12 +11,12 @@ namespace ATM_Machine.src.Services
         private Keypad _keypad= new Keypad();
 
 
-        public int CheckBalance(Account account)
+        internal int CheckBalance(Account account)
         {
             return account.Balance;
         }
 
-        public bool Withdraw(Account account, int amount)
+        internal bool Withdraw(Account account, int amount)
         {
             if (account.Balance < amount)
             {
@@ -42,7 +42,7 @@ namespace ATM_Machine.src.Services
             return false;
         }
 
-        public void Deposit(Account account)
+        internal void Deposit(Account account)
         {
             int amount= _cashDispenser.ReceiveCash();
 
@@ -56,7 +56,7 @@ namespace ATM_Machine.src.Services
             Console.WriteLine("---Cash Deposit Successful---");
         }
 
-        public void PinChange(Card card)
+        internal void PinChange(Card card)
         {
             Console.WriteLine("Please Enter your new Pin");
             var newPin = Convert.ToInt32(_keypad.ReadKeyPad());
@@ -65,7 +65,7 @@ namespace ATM_Machine.src.Services
             Console.WriteLine("Pin Change Successfully");
 
         }
-        public void MobileChange(Account account)
+        internal void MobileChange(Account account)
         {
             Console.WriteLine("Please Enter your new Mobile Number");
             var newMobile = _keypad.ReadKeyPad();

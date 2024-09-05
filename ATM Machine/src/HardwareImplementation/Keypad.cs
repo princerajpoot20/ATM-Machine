@@ -5,11 +5,6 @@ namespace ATM_Machine.HardwareImplementation;
 
 public class Keypad: IKeyPad
 {
-    public string ReadKeyPad()
-    {
-        var input = Console.ReadLine();
-        return input;
-    }
     public static string ReadSenstiveData()
     {
         StringBuilder input = new StringBuilder();
@@ -37,5 +32,11 @@ public class Keypad: IKeyPad
             }
         }
         return input.ToString();
+    }
+
+    public string ReadKeyPad()
+    {
+        var input = Console.ReadLine();
+        return input;
     }
 }
