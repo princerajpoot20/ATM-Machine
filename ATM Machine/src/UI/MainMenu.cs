@@ -1,4 +1,5 @@
 ﻿using System.Threading.Channels;
+using ATM_Machine.HardwareImplementation;
 using ATM_Machine.HardwareInterface;
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
@@ -22,14 +23,15 @@ public class MainMenu
     }
     public void ShowMainMenu()
     {
-        Console.WriteLine("-----------Welcome to ATM Machine-------------");
-        Console.WriteLine("           ======================              ");
+        
+        Screen.DisplayMessage("-----------Welcome to ATM Machine-------------");
+        Screen.DisplayMessage("           ======================              ");
 
         if(_atm.atmState == AtmState.OutOfService)
         {
-            Console.WriteLine("Sorry!! ATM is Out of Service");
-            Console.WriteLine("Hope to see you again! :)");
-            Console.WriteLine("Press Enter to exit");
+            Screen.DisplayHighlitedText("Sorry!! ATM is Out of Service");
+            Screen.DisplayHighlitedText("Hope to see you again! :)");
+            Screen.DisplayHighlitedText("Press Any key to exit");
             ConsoleKeyInfo adminRedirect = Console.ReadKey();
             if(adminRedirect.Key == ConsoleKey.Escape)
             {
@@ -37,7 +39,7 @@ public class MainMenu
             }
             return;
         }
-        Console.WriteLine("\nPress Enter to continue");
+        Screen.DisplayHighlitedText("\nPress Enter to continue");
 
         ConsoleKeyInfo keyInfo = Console.ReadKey();
         if (keyInfo.Key == ConsoleKey.Enter)
@@ -53,18 +55,17 @@ public class MainMenu
         bool isVerified = CardAccountDetails.VerifyCardDetails(_card);
         if (!isVerified)
         {
-            Console.WriteLine("Card authentication failed. :(");
             return;
         }
         var accountNumber = CardAccountDetails.GetAccountNumber(_card);
         _account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
         Console.Clear();
         Console.WriteLine("----------Welcome {0}!----------", _account.Name);
-        Console.WriteLine("1. Withdraw Cash");
-        Console.WriteLine("2. Deposit Cash");
-        Console.WriteLine("3. Check Balance");
-        Console.WriteLine("4. Account Services");
-        Console.WriteLine("5. Exit");
+        Screen.DisplayMessage("1. Withdraw Cash");
+        Screen.DisplayMessage("2. Deposit Cash");
+        Screen.DisplayMessage("3. Check Balance");
+        Screen.DisplayMessage("4. Account Services");
+        Screen.DisplayMessage("5. Exit");
 
         var choice = Convert.ToInt32(Console.ReadLine());
         switch (choice)
