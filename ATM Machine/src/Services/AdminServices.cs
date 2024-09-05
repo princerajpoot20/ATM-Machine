@@ -1,10 +1,11 @@
-﻿using ATM_Machine.src.data;
+﻿using ATM_Machine.HardwareImplementation;
+using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.UI;
 
 namespace ATM_Machine.src.Services;
 
-public class AdminServices
+internal class AdminServices: AdminDetails
 {
     // AtmState and CashStorage will be enum. Need to implement enums.
     
@@ -18,22 +19,24 @@ public class AdminServices
     }
     private AdminServices()
     {
-
+        // Object of this class cannot from outside.
+        // It can only be create from this class only, after verifying the admin details.
     }
 
     public static AdminServices VerifyAdmin(Admin admin)
     {
-        bool isVerified = AdminDetails.VerifyAdmin(admin);
+        bool isVerified = VerifyAdminDetails(admin);
         if (isVerified)
         {
             return AdminServices.getAdminServiceInstance();
         }
         return null;
     }
+
+    // Made these method as non-static because it can only be called by the verified admin.
+    // This will also needed for loggin admin activity.
     public void SetAtmState(ATM atm)
     {
-        //CurrentAtmState.SetAtmService(state);
-        // Need to display a constant screen on the display. Need to implement this!!
         Console.WriteLine("Currently Atm state is now: "+ atm.atmState);
         Console.WriteLine("Do you want to change?");
         Console.WriteLine("Press Enter for YES, otherwise press any key");
@@ -60,14 +63,10 @@ public class AdminServices
         {
             Console.WriteLine("Enter the updated quantity of notes of: {0}", denomination);
             int count = Convert.ToInt32(Console.ReadLine());
-
             cash[denomination] = count;
         }
         CashDetails.UpdateCashStorage(cash);
-        //CurrencyDenomination denomination = CurrencyDenomination.Fifty;
-        //_cashStorage.UpdateDenomination(denomination);
-        Console.WriteLine("Cash Storage updated :)");
-        
+        Screen.DisplaySuccessMessage("Cash Storage updated :)"); 
     }
 
 }

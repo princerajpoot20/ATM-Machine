@@ -1,4 +1,5 @@
-﻿using ATM_Machine.src.Models;
+﻿using ATM_Machine.HardwareImplementation;
+using ATM_Machine.src.Models;
 using System.Text;
 
 namespace ATM_Machine.src.data
@@ -26,12 +27,12 @@ namespace ATM_Machine.src.data
                 var data = line.Split(',');
                 if (data[0] == card.CardNumber && Convert.ToInt32(data[1]) == card.Pin)
                 {
-                    Console.WriteLine("Card Details verified Successfully!! :)");
+                    Screen.DisplaySuccessMessage("Card Details verified Successfully!! :)");
                     return true;
                 }
             }
 
-            Console.WriteLine("Verification failed :(");
+            Screen.DisplayWarningMessage("Card authentication failed. :(");
             return false;
         }
 

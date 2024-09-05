@@ -1,9 +1,9 @@
 ﻿namespace ATM_Machine.src.Models;
 
-public class Admin
+internal class Admin
 {
-    public string adminId;
-    public int password;
+    internal string adminId;
+    internal int password;
 
     public Admin(string adminId, int password)
     {
