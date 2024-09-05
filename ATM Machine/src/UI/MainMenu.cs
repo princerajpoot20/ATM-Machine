@@ -41,8 +41,12 @@ public class MainMenu
         Screen.DisplayHighlitedText("\nPress Enter to continue");
 
         ConsoleKeyInfo keyInfo = Console.ReadKey();
-        if (keyInfo.Key == ConsoleKey.Enter)
-            UserMenu();
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop - 2);
+                Console.WriteLine("                               ");
+                UserMenu();
+            }
         if(keyInfo.Key == ConsoleKey.Escape)
             AdminUI.AdminMenu(_atm);
         

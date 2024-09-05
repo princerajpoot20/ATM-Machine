@@ -4,7 +4,6 @@ using ATM_Machine.src.Models;
 
 namespace ATM_Machine.src.Services
 {
-
     internal class AccountService
     {
         private CashDispenser _cashDispenser= new CashDispenser();

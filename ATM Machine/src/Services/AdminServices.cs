@@ -18,7 +18,7 @@ internal class AdminServices: AdminDetails
          return new AdminServices();
     }
 
-    public static AdminServices VerifyAdmin(Admin admin, int attemptRemaining= 2)
+    internal static AdminServices VerifyAdmin(Admin admin, int attemptRemaining= 2)
     {
         bool isVerified = VerifyAdminDetails(admin);
         if (isVerified)
@@ -31,7 +31,7 @@ internal class AdminServices: AdminDetails
 
     // Made these method as non-static because it can only be called by the verified admin.
     // This will also needed for loggin admin activity.
-    public void SetAtmState(ATM atm)
+    internal void SetAtmState(ATM atm)
     {
         Console.WriteLine("Currently Atm state is now: "+ atm.atmState);
         Console.WriteLine("Do you want to change?");
@@ -51,7 +51,7 @@ internal class AdminServices: AdminDetails
             AtmDetails.updateAtmDetails(atm);
         }
     }
-    public void UpdateCashStorage()
+    internal void UpdateCashStorage()
     {
         Console.WriteLine("------Cash Storage--------");
         Dictionary<CurrencyDenomination,int>cash = new Dictionary<CurrencyDenomination, int>();
