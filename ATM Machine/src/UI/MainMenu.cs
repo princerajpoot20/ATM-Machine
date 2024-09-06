@@ -1,12 +1,12 @@
-﻿using System.Threading.Channels;
-using ATM_Machine.HardwareImplementation;
+﻿using ATM_Machine.HardwareImplementation;
 using ATM_Machine.HardwareInterface;
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
+using ATM_Machine.src.UI;
+using ATM_Machine.src.Utils;
 
-namespace ATM_Machine.UI;
-
+namespace ATM_Machine.UI { 
 public class MainMenu
 {
     private readonly ICardReader _cardReader;
@@ -14,8 +14,8 @@ public class MainMenu
     private readonly AccountService _accountService;
     private Account _account;
     private ATM _atm;
-    private AdminServices _adminServices;
-    public MainMenu(ICardReader cardReader, AccountService accountService, ATM atm)
+    
+    internal MainMenu(ICardReader cardReader, AccountService accountService, ATM atm)
     {
         _cardReader = cardReader;
         _accountService = accountService;
@@ -35,17 +35,22 @@ public class MainMenu
             ConsoleKeyInfo adminRedirect = Console.ReadKey();
             if(adminRedirect.Key == ConsoleKey.Escape)
             {
-                AdminMenu();
+                AdminUI.AdminMenu(_atm);
             }
+
             return;
         }
         Screen.DisplayHighlitedText("\nPress Enter to continue");
 
         ConsoleKeyInfo keyInfo = Console.ReadKey();
-        if (keyInfo.Key == ConsoleKey.Enter)
-            UserMenu();
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop - 2);
+                Console.WriteLine("                               ");
+                UserMenu();
+            }
         if(keyInfo.Key == ConsoleKey.Escape)
-            AdminMenu();
+            AdminUI.AdminMenu(_atm);
         
     }
 
@@ -72,9 +77,9 @@ public class MainMenu
         {
             case 1:
                 Console.WriteLine("Enter Amount to withdraw: ");
-                var amount = Convert.ToInt32(Console.ReadLine());
-
-                _accountService.Withdraw(_account, amount);
+                bool isValid = InputValidator.ReadInteger(out int amount, 0);
+                if(isValid)
+                    _accountService.Withdraw(_account, amount);
                 break;
             case 2:
                 //Console.WriteLine("Enter Amount to deposit: ");
@@ -114,41 +119,5 @@ public class MainMenu
                 break;
         }
     }
-
-    public void AdminMenu()
-    {
-        Console.Clear();
-        Console.WriteLine("----WWelcome to Admin Panel");
-        Console.WriteLine("Enter your admin id:");
-        var adminId = Console.ReadLine();
-        Console.WriteLine("Enter your password:");
-        var password = Convert.ToInt32(Console.ReadLine());
-        _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));
-        if (_adminServices == null)
-        {
-            Console.WriteLine("Authentication failed");
-            return;
-        }
-
-        Console.WriteLine("Authentication Successful");
-        Console.WriteLine("1. Refill Cash");
-        Console.WriteLine("2. Change ATM Service State");
-        var choice = Convert.ToInt32(Console.ReadLine());
-
-        switch (choice)
-        {
-            case 1:
-                
-                _adminServices.UpdateCashStorage();
-                break;
-            case 2:
-                _adminServices.SetAtmState(_atm);
-                break;
-
-            default:
-                Console.WriteLine("Invalid Choice");
-                break;
     }
-}
-
-}
+ }

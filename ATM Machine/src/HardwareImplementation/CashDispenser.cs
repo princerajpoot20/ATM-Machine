@@ -1,6 +1,7 @@
 ﻿using ATM_Machine.HardwareInterface;
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
+using ATM_Machine.src.Utils;
 
 namespace ATM_Machine.HardwareImplementation;
 
@@ -58,7 +59,11 @@ public class CashDispenser : ICashDispenser
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {
             Console.WriteLine("Enter the quantity of notes {0}", denomination);
-            int count = Convert.ToInt32(Console.ReadLine());
+            bool isValidInput = InputValidator.ReadInteger(out int count, 0);
+            if (!isValidInput)
+            {
+                return -1;
+            }
             cash[denomination] = count;
             totalAmount = totalAmount + ((int)denomination * count);
         }
