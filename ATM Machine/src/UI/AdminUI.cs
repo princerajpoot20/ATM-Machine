@@ -2,12 +2,6 @@
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
 using ATM_Machine.src.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ATM_Machine.src.UI
 {
@@ -15,15 +9,20 @@ namespace ATM_Machine.src.UI
     {
         private static ATM _atm;
         private static AdminServices _adminServices = null;
-        public static void takeAdminDetails()
+        internal static void AdminMenu(ATM atm)
         {
-            Screen.DisplayMessage("Enter your admin id:");
-            var adminId = Console.ReadLine();
-            Console.WriteLine("Enter your password:");
-            bool isValidPassword = InputValidator.ReadInteger(out int password);
-            _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));
-        }
+            _atm = atm;
+            Console.Clear();
+            Screen.DisplayHighlitedText("WWelcome to Admin Panel");
 
+            adminVerification();
+            if (_adminServices == null) return;
+
+            Screen.DisplaySuccessMessage("Authentication Successful");
+            Logger.Logger.LogMessage($"{_adminServices._admin.adminId} (Admin) Logged in Successful.");
+            AdminFeatureList();
+
+        }
         internal static void AdminFeatureList()
         {
             Screen.DisplayMessage("1. Refill Cash");
@@ -34,7 +33,6 @@ namespace ATM_Machine.src.UI
             switch (choice)
             {
                 case 1:
-
                     _adminServices.UpdateCashStorage();
                     break;
                 case 2:
@@ -47,13 +45,12 @@ namespace ATM_Machine.src.UI
                     break;
             }
         }
-
         internal static void adminVerification(int attemptsRemaining=2)
         {
             takeAdminDetails();
             if (_adminServices == null && attemptsRemaining > 0)
             {
-                Screen.DisplayMessage("Press Escape to try again OR Press anykey to Try again");
+                Screen.DisplayMessage("Press Escape to EXIT OR Press anykey to Try again");
                 var key = Console.ReadKey();
                 if (key.Key == ConsoleKey.Escape) return;
                 adminVerification(attemptsRemaining - 1);
@@ -63,19 +60,13 @@ namespace ATM_Machine.src.UI
                 Screen.DisplayErrorMessage("You have exceeded the maximum number of attempts.");
             }
         }
-        internal static void AdminMenu(ATM atm)
+        public static void takeAdminDetails()
         {
-            _atm = atm;
-            Console.Clear();
-            Screen.DisplayHighlitedText("WWelcome to Admin Panel");
-            
-            adminVerification();
-            if (_adminServices == null) return;
-
-            Screen.DisplaySuccessMessage("Authentication Successful");
-            AdminFeatureList();
-
+            Screen.DisplayMessage("Enter your admin id:");
+            var adminId = Console.ReadLine();
+            Console.WriteLine("Enter your admin pin:");
+            bool isValidPassword = InputValidator.ReadInteger(out int password);
+            _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));
         }
-
     }
 }

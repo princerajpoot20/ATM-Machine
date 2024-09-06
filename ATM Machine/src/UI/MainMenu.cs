@@ -5,20 +5,19 @@ using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
 using ATM_Machine.src.UI;
 using ATM_Machine.src.Utils;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace ATM_Machine.UI { 
 public class MainMenu
 {
-    private readonly ICardReader _cardReader;
-    private  Card _card;
-    private readonly AccountService _accountService;
-    private Account _account;
-    private ATM _atm;
+    private static ICardReader _cardReader;
+    private static Card _card;
+    private static AccountService _accountService;
+    private static ATM _atm;
     
-    internal MainMenu(ICardReader cardReader, AccountService accountService, ATM atm)
+    internal MainMenu(ATM atm)
     {
-        _cardReader = cardReader;
-        _accountService = accountService;
+        _cardReader = new CardReader();
         _atm = atm;
     }
     public void ShowMainMenu()
@@ -54,44 +53,37 @@ public class MainMenu
         
     }
 
-    public void UserMenu()
+    public static void UserMenu()
     {
         _card = _cardReader.ReadCard();
         bool isVerified = CardAccountDetails.VerifyCardDetails(_card);
-        if (!isVerified)
-        {
-            return;
-        }
-        var accountNumber = CardAccountDetails.GetAccountNumber(_card);
-        _account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
+        if (!isVerified) return;
+        _accountService = new AccountService(_card);
         Console.Clear();
-        Console.WriteLine("----------Welcome {0}!----------", _account.Name);
+        Console.WriteLine("----------Welcome {0}!----------", _accountService.GetAccountHolderName());
         Screen.DisplayMessage("1. Withdraw Cash");
         Screen.DisplayMessage("2. Deposit Cash");
         Screen.DisplayMessage("3. Check Balance");
         Screen.DisplayMessage("4. Account Services");
         Screen.DisplayMessage("5. Exit");
 
-        var choice = Convert.ToInt32(Console.ReadLine());
+        bool isValidInput = InputValidator.ReadInteger(out int choice, 1,5);
+        if(!isValidInput) return;
         switch (choice)
         {
             case 1:
                 Console.WriteLine("Enter Amount to withdraw: ");
                 bool isValid = InputValidator.ReadInteger(out int amount, 0);
                 if(isValid)
-                    _accountService.Withdraw(_account, amount);
+                    _accountService.Withdraw(amount);
                 break;
             case 2:
-                //Console.WriteLine("Enter Amount to deposit: ");
-                //var depositAmount = Convert.ToInt32(Console.ReadLine());
-                _accountService.Deposit(_account);
+                _accountService.Deposit();
                 break;
             case 3:
-                var balance = _accountService.CheckBalance(_account);
-                Console.WriteLine("Your Balance is: {0}", balance);
+                _accountService.CheckBalance();
                 break;
             case 4:
-                Console.WriteLine("Account Services");
                 ShowAccountServices();
                 break;
             default:
@@ -99,20 +91,19 @@ public class MainMenu
                 break;
         }
     }
-    public void ShowAccountServices()
+    public static void ShowAccountServices()
     {
         Console.Clear();
+        Console.WriteLine("Account Services");
         Console.WriteLine("1. Change Pin");
         Console.WriteLine("2. Update Mobile Number");
         Console.WriteLine("3. Exit");
-        var choice = Convert.ToInt32(Console.ReadLine());
+        bool isValidInput= InputValidator.ReadInteger(out int choice,0);
+        if(!isValidInput) return;
         switch (choice)
         {
             case 1:
                 _accountService.PinChange(_card);
-                break;
-            case 2:
-                _accountService.MobileChange(_account);
                 break;
             default:
                 Console.WriteLine("Invalid Choice");

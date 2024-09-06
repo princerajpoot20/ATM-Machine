@@ -10,21 +10,7 @@ public class CashDetails
 
     public static void UpdateCashStorage(Dictionary<CurrencyDenomination, int> cash)
     {
-        //var cashStorage = File.ReadAllLines(_cardDetailsPath);
-        //foreach (var line in cashStorage)
-        //{
-        //    var data = line.Split(',');
-        //    // used try parse to convert string to enumtype 
-        //    if (Enum.TryParse(data[0], out CurrencyDenomination currencyDenomination))
-        //    {
-        //        Console.WriteLine("Debug 3");
-        //        //line.Replace(Convert.ToInt32(data[1]), cash[currencyDenomination]);
-        //    }
-        //}
-
-        StringBuilder builder = new StringBuilder();
-
-
+         StringBuilder builder = new StringBuilder();
         string line= CurrencyDenomination.Fifty.ToString() + "," + cash[CurrencyDenomination.Fifty];
         builder.AppendLine(line);
         line= CurrencyDenomination.OneHundred.ToString() + "," + cash[CurrencyDenomination.OneHundred];
@@ -33,12 +19,25 @@ public class CashDetails
         builder.AppendLine(line);
         line= CurrencyDenomination.FiveHundred.ToString() + "," + cash[CurrencyDenomination.FiveHundred];
         builder.AppendLine(line);
-
-
         using (StreamWriter writer = new StreamWriter(_cashDetailsPath, false)) // false to overwrite the file
         {
             writer.Write(builder.ToString());
         }
 
+    }
+    internal static int GetCashCount(CurrencyDenomination denomination)
+    {
+        var lines = File.ReadAllLines(_cashDetailsPath);
+        foreach (var line in lines)
+        {
+            var data = line.Split(',');
+            // we need to convert data[0] to currenydenomination 
+            if (Enum.TryParse(data[0], out CurrencyDenomination foundDenomination) &&
+                foundDenomination == denomination)
+            {
+                return int.Parse(data[1]);
+            }
+        }
+        return 0;
     }
 }
