@@ -23,8 +23,8 @@ public class MainMenu
     public void ShowMainMenu()
     {
         
-        Screen.DisplayMessage("-----------Welcome to ATM Machine-------------");
-        Screen.DisplayMessage("           ======================              ");
+        Screen.DisplayHeading("<<Welcome to ATM Machine>>");
+        //Screen.DisplayMessage("==========================");
 
         if(_atm.atmState == AtmState.OutOfService)
         {
@@ -60,15 +60,21 @@ public class MainMenu
         if (!isVerified) return;
         _accountService = new AccountService(_card);
         Console.Clear();
-        Console.WriteLine("----------Welcome {0}!----------", _accountService.GetAccountHolderName());
-        Screen.DisplayMessage("1. Withdraw Cash");
-        Screen.DisplayMessage("2. Deposit Cash");
-        Screen.DisplayMessage("3. Check Balance");
-        Screen.DisplayMessage("4. Account Services");
-        Screen.DisplayMessage("5. Exit");
+            
+        Screen.DisplayHeading($"Welcome {_accountService.GetAccountHolderName()}!");
+        string[] menu = new string[]
+                    {
+        "Withdraw Cash",
+        "Deposit Cash",
+        "Check Balance",
+        "Account Services",
+        "Exit"
+        };
 
-        bool isValidInput = InputValidator.ReadInteger(out int choice, 1,5);
-        if(!isValidInput) return;
+        //bool isValidInput = InputValidator.ReadInteger(out int choice, 1,5);
+        int choice =InteractiveMenuSelector.InteractiveMenu(menu, 1, 5);
+
+        //if(!isValidInput) return;
         switch (choice)
         {
             case 1:
@@ -94,17 +100,24 @@ public class MainMenu
     public static void ShowAccountServices()
     {
         Console.Clear();
-        Console.WriteLine("Account Services");
-        Console.WriteLine("1. Change Pin");
-        Console.WriteLine("2. Update Mobile Number");
-        Console.WriteLine("3. Exit");
-        bool isValidInput= InputValidator.ReadInteger(out int choice,0);
-        if(!isValidInput) return;
+            Console.WriteLine("Account Services");
+            //Console.WriteLine("1. Change Pin");
+            //Console.WriteLine("2. Update Mobile Number");
+            //Console.WriteLine("3. Exit");
+        int choice = InteractiveMenuSelector.InteractiveMenu(new string[]
+        {
+            "Change Pin",
+            "Exit"
+        }, 1,2);
+        //bool isValidInput= InputValidator.ReadInteger(out int choice,0);
+        //if(!isValidInput) return;
         switch (choice)
         {
             case 1:
                 _accountService.PinChange(_card);
                 break;
+            case 2:
+                return;
             default:
                 Console.WriteLine("Invalid Choice");
                 break;

@@ -25,14 +25,15 @@ namespace ATM_Machine.src.Utils
             if (!isValid)
             {
                 Screen.DisplayWarningMessage("Please enter the numeric value.");
-                Console.Write("Press Escape to EXIT OR Press Enter to Try again");
-                var key = Console.ReadKey();
-                if (key.Key == ConsoleKey.Escape)
+                //Console.Write("Press Escape to EXIT OR Press Enter to Try again");
+                //var key = Console.ReadKey();
+                int choice= InteractiveMenuSelector.InteractiveMenu();
+                if (choice==2)
                 {
                     input = -1;
                     return false;
                 }
-                if (key.Key == ConsoleKey.Enter)
+                else if (choice==1)
                 {
                     Console.WriteLine();
                     return ReadInteger(out input, startValue, endValue, maxAttempt - 1);
@@ -41,14 +42,15 @@ namespace ATM_Machine.src.Utils
             else if (input < startValue || input > endValue)
             {
                 Screen.DisplayWarningMessage($"Please enter the number from the choice given i.e between {startValue} to {endValue}.");
-                Console.Write("Press Escape to EXIT OR Press Enter to Try again");
-                var key = Console.ReadKey();
-                if (key.Key == ConsoleKey.Escape)
+                //Console.Write("Press Escape to EXIT OR Press Enter to Try again");
+                //var key = Console.ReadKey();
+                var choice= InteractiveMenuSelector.InteractiveMenu();
+                if (choice==2)
                 {
                     input = -1;
                     return false;
                 }
-                else if (key.Key == ConsoleKey.Enter)
+                else if (choice==1)
                 {
                     Console.WriteLine();
                     return ReadInteger(out input, startValue, endValue, maxAttempt - 1);

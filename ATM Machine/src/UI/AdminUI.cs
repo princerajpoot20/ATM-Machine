@@ -25,11 +25,20 @@ namespace ATM_Machine.src.UI
         }
         internal static void AdminFeatureList()
         {
-            Screen.DisplayMessage("1. Refill Cash");
-            Screen.DisplayMessage("2. Change ATM Service State");
-            Screen.DisplayMessage("3. Exit");
-            bool isValidChoice = InputValidator.ReadInteger(out int choice,1,3);
-            if (!isValidChoice) return;
+            var menu = new string[]
+            {
+                "Refil Cash",
+                "Change ATM Service State",
+                "Exit"
+            };
+
+            //Screen.DisplayMessage("1. Refill Cash");
+            //Screen.DisplayMessage("2. Change ATM Service State");
+            //Screen.DisplayMessage("3. Exit");
+            //bool isValidChoice = InputValidator.ReadInteger(out int choice,1,3);
+            //if (!isValidChoice) return;
+            int choice = InteractiveMenuSelector.InteractiveMenu(menu, 1, 3);
+
             switch (choice)
             {
                 case 1:
@@ -64,6 +73,17 @@ namespace ATM_Machine.src.UI
         {
             Screen.DisplayMessage("Enter your admin id:");
             var adminId = Console.ReadLine();
+            adminId= adminId?.Trim();
+            if (string.IsNullOrEmpty(adminId))
+            {
+                Screen.DisplayErrorMessage("Admin Id cannot be empty.");
+                int retryChoice = InteractiveMenuSelector.InteractiveMenu();
+                if (retryChoice == 2)
+                {
+                    return;
+                }
+                takeAdminDetails();
+            }
             Console.WriteLine("Enter your admin pin:");
             bool isValidPassword = InputValidator.ReadInteger(out int password);
             _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));

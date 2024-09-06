@@ -59,6 +59,9 @@ namespace ATM_Machine.src.Services
             if (amount == -1)
             {
                 Screen.DisplayWarningMessage("Cash Deposit Failed");
+                Logger.Logger.LogMessage($"{_account.AccountNumber} Amount deposited failed. No cash collected");
+                
+                return;
             }
             
             _account.Balance += amount;
