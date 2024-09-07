@@ -3,27 +3,34 @@ using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.UI;
 using System.Reflection.Emit;
+using ATM_Machine.src.Utils;
 
 namespace ATM_Machine.src.Services;
 
-internal class AdminServices: AdminDetails
-{   
-    private AdminServices()
+internal class AdminServices : AdminDetails
+    // AdminServices class is inherited from AdminDetails class.
+    // Admin services cannot be operated without admin database connection.
+{
+    // Made this as readonly and internal so that it can be accessed by other classes for logging activity.
+    // At the same time it cannot be changed from outside.
+    internal readonly Admin _admin;
+    private AdminServices(Admin admin)
     {
         // Object of this class cannot from outside.
         // It can only be create from this class only, after verifying the admin details.
+        _admin = admin;
     }
-    private static AdminServices getAdminServiceInstance()
+    private static AdminServices getAdminServiceInstance(Admin admin)
     {
-         return new AdminServices();
+         return new AdminServices(admin);
     }
 
-    internal static AdminServices VerifyAdmin(Admin admin, int attemptRemaining= 2)
+    internal static AdminServices VerifyAdmin(Admin admin)
     {
         bool isVerified = VerifyAdminDetails(admin);
         if (isVerified)
         {
-            return AdminServices.getAdminServiceInstance();
+            return AdminServices.getAdminServiceInstance(admin);
         }
         Screen.DisplayWarningMessage("Admin authentication failed. :(");
         return null;
@@ -49,6 +56,7 @@ internal class AdminServices: AdminDetails
             }
             Console.WriteLine("Atm state changed to: "+ atm.atmState);
             AtmDetails.updateAtmDetails(atm);
+            Logger.Logger.LogMessage($"{_admin} Changed the Atm State");
         }
     }
     internal void UpdateCashStorage()
@@ -58,11 +66,14 @@ internal class AdminServices: AdminDetails
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {
             Console.WriteLine("Enter the updated quantity of notes of: {0}", denomination);
-            int count = Convert.ToInt32(Console.ReadLine());
+            bool isVerified = InputValidator.ReadInteger(out int count, 0);
+            if(!isVerified)
+                return;
             cash[denomination] = count;
         }
         CashDetails.UpdateCashStorage(cash);
-        Screen.DisplaySuccessMessage("Cash Storage updated :)"); 
+        Screen.DisplaySuccessMessage("Cash Storage updated :)");
+        Logger.Logger.LogMessage($"{_admin} Updated the Cash Storage");
     }
 
 }

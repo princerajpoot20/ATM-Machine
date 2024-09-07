@@ -7,12 +7,16 @@ namespace ATM_Machine.HardwareImplementation;
 
 public class CashDispenser : ICashDispenser
 {
+    private Account _account;
+    public CashDispenser(Account account)
+    {
+        _account = account;
+    }
     public bool Dispense(Dictionary<CurrencyDenomination, int> cash)
     {
         Console.WriteLine("-----Dispensing Cash-----");
         foreach (var currency in cash)
         {
-            // call update cash to update the cash storage csv. Need to implement this !!
             Console.WriteLine(currency.Key.ToString() + " of " + currency.Value + " notes.");
         }
         Console.WriteLine("------Dispensing Cash-----");
@@ -28,17 +32,19 @@ public class CashDispenser : ICashDispenser
 
         foreach (var denomination in denominations)
         {
-            int count= amount / (int)denomination;
-            int available = CardAccountDetails.GetCashCount(denomination) ;
-            if(count > available)
+            int count = amount / (int)denomination;
+            int available = CashDetails.GetCashCount(denomination);
+            if (count <= available)
             {
-                Console.WriteLine("Cash not available");
-                return false;
+                cash[denomination] = count;
+                amount -= count * (int)denomination;
             }
-            cash[denomination]= count;
-            amount -= count * (int)denomination;
+            else if (available != 0)
+            {
+                cash[denomination] = available;
+                amount -= available * (int)denomination;
+            }
         }
-
         if (amount > 0)
         {
             Console.WriteLine("Unable to dispense exact amount due to denomination limitation.");
@@ -70,6 +76,13 @@ public class CashDispenser : ICashDispenser
 
         Console.WriteLine("------Please wait validating cash-------");
         Thread.Sleep(10000);
+
+        if(totalAmount==0)
+        {
+            Console.WriteLine("No cash inserted");
+            return -1;
+        }
+
         Console.WriteLine("----Total cash inserted in machine: {0}", totalAmount);
 
         Console.WriteLine("----Press Enter to CONFIRM!-----");
