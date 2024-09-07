@@ -24,6 +24,13 @@ abstract public  class MonitorScreen
 }
 public class Screen : MonitorScreen
 {
+    public static void DisplayHeading(string message)
+    {
+        Console.BackgroundColor = ConsoleColor.Blue;
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
     public static void DisplayWarningMessage(string message)
     {
         Console.BackgroundColor = ConsoleColor.Red;

@@ -1,5 +1,8 @@
-﻿using System.Reflection.Emit;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ATM_Machine.src.Utils
 {
@@ -8,11 +11,10 @@ namespace ATM_Machine.src.Utils
 
         public static int InteractiveMenu(string[] menu, int start, int end)
         {
-            Console.OutputEncoding = Encoding.UTF8; // to use emoji
-
+            Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
 
-            Console.WriteLine("\nUse ⬆️ and ⬇️ to navigate and press \u001b[32mEnter\u001b[0m to select:");
+            Console.WriteLine("\nUse ⬆️  and ⬇️  to navigate and press \u001b[32mEnter\u001b[0m to select:");
             var cursor = Console.GetCursorPosition();
             var option = 1;
             var decorator = "✅ \u001b[32m";
@@ -28,7 +30,9 @@ namespace ATM_Machine.src.Utils
                     Console.WriteLine($"{(option == i+1 ? decorator : "   ")}{menu[i]}\u001b[0m");
                    
                 }
+
                 key = Console.ReadKey();
+
                 switch (key.Key)
                 {
                     case ConsoleKey.UpArrow:
@@ -45,19 +49,14 @@ namespace ATM_Machine.src.Utils
                 }
             }
 
-            //Console.WriteLine($"\n{decorator}You selected: {menu[option-1]}");
+            Console.WriteLine($"\n{decorator}You selected: {menu[option-1]}");
             Console.CursorVisible = true;
             Console.ResetColor();
             return option;
         }
         public static int InteractiveMenu()
         {
-            Console.WriteLine();
             return InteractiveMenu(new string[] { "Retry", "EXIT" }, 1, 2);
-        }
-        public static int YesNo()
-        {
-            return InteractiveMenu(new string[] {"Yes", "No"}, 1, 2);
         }
 
     }

@@ -71,7 +71,7 @@ class Program
         //};
 
         //Console.WriteLine(InteractiveMenuSelector.InteractiveMenu(menu, 1,4));
-
-        MainMenu.ShowHomeMenu();
+        MainMenu mainMenu = new MainMenu(ATM.getAtmInstance(123));
+        mainMenu.ShowMainMenu();
     }
 }

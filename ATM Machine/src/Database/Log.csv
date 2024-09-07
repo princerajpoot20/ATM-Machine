@@ -13,36 +13,3 @@
 9/6/2024 3:40:48 PM, 123456 Failed! Amount debited but cash does not dispense successful.
 9/6/2024 3:43:04 PM, 123456 Amount deposited failed. No cash collected
 9/6/2024 3:43:55 PM, 123456 Amount deposited failed. No cash collected
-9/6/2024 3:55:31 PM, 123456 Checked account balance
-9/6/2024 3:58:42 PM, 123456 Withdraw 2250 successful
-9/6/2024 4:03:14 PM, 123456 Amount 1400 deposited successful
-9/6/2024 4:08:53 PM, admin (Admin) Logged in Successful.
-9/6/2024 4:10:38 PM, ATM_Machine.src.Models.Admin Updated the Cash Storage
-9/6/2024 4:10:49 PM, admin (Admin) Logged in Successful.
-9/6/2024 4:14:32 PM, ATM_Machine.src.Models.Admin Changed the Atm State
-9/6/2024 4:26:13 PM, admin (Admin) Logged in Successful.
-9/6/2024 4:26:15 PM, ATM_Machine.src.Models.Admin Changed the Atm State
-9/7/2024 1:46:05 PM, 123456 Checked account balance
-9/7/2024 1:51:30 PM, 123456 Checked account balance
-9/7/2024 1:51:55 PM, 123456 Checked account balance
-9/7/2024 1:52:15 PM, 123456 Checked account balance
-9/7/2024 1:52:19 PM, 123456 Checked account balance
-9/7/2024 1:52:36 PM, 123456 Withdraw 50 successful
-9/7/2024 1:52:42 PM, 123456 Checked account balance
-9/7/2024 1:53:18 PM, 123456 Amount 1700 deposited successful
-9/7/2024 1:54:14 PM, 123456 Checked account balance
-9/7/2024 2:58:26 PM, 123456 Checked account balance
-9/7/2024 2:58:49 PM, 123 Pin change successful
-9/7/2024 3:02:40 PM, 1234567890123456 Failed!! Card is not linked to any account
-9/7/2024 3:08:16 PM, 1234567890123456 Failed!! Card is not linked to any account
-9/7/2024 3:19:57 PM, 1234567890123456 Failed!! Card is not linked to any account
-9/7/2024 3:41:37 PM, 123456 Failed! Amount debited but cash does not dispense successful.
-9/7/2024 3:44:09 PM, 123456 Amount 850 deposited successful
-9/7/2024 3:50:06 PM, 123456 Amount deposited failed. No cash collected
-9/7/2024 3:50:28 PM, 123456 Checked account balance
-9/7/2024 5:58:45 PM, 1234567890123456 Failed!! Card is not linked to any account
-9/7/2024 6:03:25 PM, 123456 Checked account balance
-9/7/2024 6:04:39 PM, 123456 Amount deposited failed. No cash collected
-9/7/2024 6:05:31 PM, 123456 Amount -2 deposited successful
-9/7/2024 6:06:53 PM, 123456 Checked account balance
-9/7/2024 6:07:17 PM, 123456 Withdraw 150 successful

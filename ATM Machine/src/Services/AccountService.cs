@@ -13,35 +13,16 @@ namespace ATM_Machine.src.Services
         private Account _account;
         private CashDispenser _cashDispenser;
 
-        private AccountService(Account account)
+        internal AccountService(Card card)
         {
-            _account = account;
-            _cashDispenser = new CashDispenser(_account);
-        }
-        internal static AccountService GetAccountServiceInstance(Card card)
-        {
-           
             var accountNumber = CardAccountDetails.GetAccountNumber(card);
-            if (accountNumber == null)
+            _account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
+            if (_account == null)
             {
                 Logger.Logger.LogMessage($"{card.CardNumber} Failed!! Card is not linked to any account");
-                Screen.DisplayErrorMessage("Card is not linked to any account");
-                Screen.DisplayMessage("Please remove your card");
-                Console.Write("Redirecting to home in... ");
-                WaitTimer.Wait(6);
-                return null;
+                throw new System.Exception("Card is not linked to any account");
             }
-            Account account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
-            if (account == null)
-            {
-                Logger.Logger.LogMessage($"{card.CardNumber} Failed!! Not able to locate account");
-                Screen.DisplayErrorMessage("Not able to locate account.");
-                Screen.DisplayMessage("Please remove your card");
-                Console.Write("Redirecting to home in... ");
-                WaitTimer.Wait(6);
-                return null;
-            }
-            return new AccountService(account);
+            _cashDispenser= new CashDispenser(_account);
         }
         internal void CheckBalance()
         {
@@ -60,11 +41,12 @@ namespace ATM_Machine.src.Services
             {
                 _account.Balance -= amount;
                 CardAccountDetails.UpdateAccount(_account);
-                Screen.DisplaySuccessMessage("Transaction Successfully");
-                Screen.DisplayMessage("Do you want to check your updated balance?");
-                int choice = InteractiveMenuSelector.YesNo();
-                if (choice == 1)
-                    Console.WriteLine("Your Updated Balance is: {0}", _account.Balance);
+                Console.WriteLine("----Balance Update Successfully----");
+                Console.WriteLine("Press Enter to Display the updated balance");
+                Console.WriteLine("Press any key to continue");
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Enter)
+                    Console.WriteLine("---Your Updated Balance is: {0}", _account.Balance);
                 Logger.Logger.LogMessage($"{_account.AccountNumber} Withdraw {amount} successful");
                 return true;
             }
@@ -81,13 +63,10 @@ namespace ATM_Machine.src.Services
                 
                 return;
             }
-            if (amount == -2) { 
-                Screen.DisplaySuccessMessage("No cash deposited.");
-            }
             
             _account.Balance += amount;
             CardAccountDetails.UpdateAccount(_account);
-            Screen.DisplaySuccessMessage("Cash Deposit Successful");
+            Console.WriteLine("---Cash Deposit Successful---");
             Logger.Logger.LogMessage($"{_account.AccountNumber} Amount {amount} deposited successful");
         }
         internal void PinChange(Card card)
@@ -97,7 +76,7 @@ namespace ATM_Machine.src.Services
             if(!isValidInput) return;
             card.Pin = newPin;
             CardAccountDetails.UpdateCard(card);
-            Screen.DisplaySuccessMessage("Pin Change Successfully");
+            Console.WriteLine("Pin Change Successfully");
             Logger.Logger.LogMessage($"{card.CardNumber} Pin change successful");
         }
         internal string GetAccountHolderName()

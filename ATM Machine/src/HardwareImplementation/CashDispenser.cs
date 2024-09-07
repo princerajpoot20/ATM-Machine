@@ -8,11 +8,11 @@ namespace ATM_Machine.HardwareImplementation;
 internal class CashDispenser : ICashDispenser
 {
     private Account _account;
-    internal CashDispenser(Account account)
+    public CashDispenser(Account account)
     {
         _account = account;
     }
-    internal bool Dispense(Dictionary<CurrencyDenomination, int> cash)
+    public bool Dispense(Dictionary<CurrencyDenomination, int> cash)
     {
         Console.WriteLine("-----Dispensing Cash-----");
         foreach (var currency in cash)
@@ -74,7 +74,21 @@ internal class CashDispenser : ICashDispenser
             totalAmount = totalAmount + ((int)denomination * count);
         }
 
-        if (totalAmount == 0)
+        Console.WriteLine("------Please wait validating cash-------");
+        Thread.Sleep(10000);
+
+        if(totalAmount==0)
+        {
+            Console.WriteLine("No cash inserted");
+            return -1;
+        }
+
+        Console.WriteLine("----Total cash inserted in machine: {0}", totalAmount);
+
+        Console.WriteLine("----Press Enter to CONFIRM!-----");
+
+        ConsoleKeyInfo keyInfo = Console.ReadKey();
+        if (keyInfo.Key != ConsoleKey.Enter)
         {
             Console.WriteLine("No cash inserted");
             return -1;

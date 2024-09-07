@@ -36,7 +36,7 @@ namespace ATM_Machine.src.data
             return false;
         }
 
-        protected static string? GetAccountNumber(Card card)
+        protected static string GetAccountNumber(Card card)
         {
             var lines = File.ReadAllLines(_cardAccountMappingPath);
             foreach (var line in lines)

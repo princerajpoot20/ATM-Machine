@@ -10,9 +10,21 @@ using Microsoft.VisualBasic.CompilerServices;
 namespace ATM_Machine.UI { 
 public class MainMenu
 {
-    private static Card? _card;
+    private static ICardReader _cardReader;
+    private static Card _card;
     private static AccountService _accountService;
     private static ATM _atm;
+    
+    internal MainMenu(ATM atm)
+    {
+        _cardReader = new CardReader();
+        _atm = atm;
+    }
+    public void ShowMainMenu()
+    {
+        
+        Screen.DisplayHeading("<<Welcome to ATM Machine>>");
+        //Screen.DisplayMessage("==========================");
 
     static MainMenu()
     {
@@ -61,17 +73,45 @@ public class MainMenu
         _card = CardReader.ReadCard();
             if (_card == null) return;
         bool isVerified = CardAccountDetails.VerifyCardDetails(_card);
-        if (!isVerified)
-            {
-                Screen.DisplayMessage("Please remove your card");
-                Console.Write("Redirecting to home in... ");
-                WaitTimer.Wait(6);
-                return;
-            }
-        _accountService = AccountService.GetAccountServiceInstance(_card);
-        if(_accountService == null) return;
+        if (!isVerified) return;
+        _accountService = new AccountService(_card);
         Console.Clear();
-        DisplayUserServices();
+            
+        Screen.DisplayHeading($"Welcome {_accountService.GetAccountHolderName()}!");
+        string[] menu = new string[]
+                    {
+        "Withdraw Cash",
+        "Deposit Cash",
+        "Check Balance",
+        "Account Services",
+        "Exit"
+        };
+
+        //bool isValidInput = InputValidator.ReadInteger(out int choice, 1,5);
+        int choice =InteractiveMenuSelector.InteractiveMenu(menu, 1, 5);
+
+        //if(!isValidInput) return;
+        switch (choice)
+        {
+            case 1:
+                Console.WriteLine("Enter Amount to withdraw: ");
+                bool isValid = InputValidator.ReadInteger(out int amount, 0);
+                if(isValid)
+                    _accountService.Withdraw(amount);
+                break;
+            case 2:
+                _accountService.Deposit();
+                break;
+            case 3:
+                _accountService.CheckBalance();
+                break;
+            case 4:
+                ShowAccountServices();
+                break;
+            default:
+                Console.WriteLine("Invalid Choice");
+                break;
+        }
     }
     public static void ShowAccountServices()
     {
