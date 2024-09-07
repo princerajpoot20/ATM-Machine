@@ -66,7 +66,7 @@ internal class AdminServices : AdminDetails
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {
             Console.WriteLine("Enter the updated quantity of notes of: {0}", denomination);
-            bool isVerified = InputValidator.ReadInteger(out int count, 0);
+            bool isVerified = InputValidator.ReadInteger(out int count, Console.GetCursorPosition(), 0);
             if(!isVerified)
                 return;
             cash[denomination] = count;

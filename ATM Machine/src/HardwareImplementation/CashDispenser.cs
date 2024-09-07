@@ -64,8 +64,9 @@ internal class CashDispenser : ICashDispenser
         int totalAmount = 0;
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {
-            Console.WriteLine("Enter the quantity of notes {0}", denomination);
-            bool isValidInput = InputValidator.ReadInteger(out int count, 0, 1000);
+            var temp = $"Enter the quantity of notes {denomination}"; 
+            //Console.WriteLine(temp);
+            bool isValidInput = InputValidator.ReadInteger(out int count, Console.GetCursorPosition(), 0, 500, 2,temp);
             if (!isValidInput)
             {
                 return -1;
@@ -83,7 +84,7 @@ internal class CashDispenser : ICashDispenser
         Console.WriteLine("\n----------------------------------");
         Console.WriteLine("\nTotal cash inserted in machine: {0}", totalAmount);
 
-        Console.WriteLine("Please confirm the amount calculated");
+        Screen.DisplayHighlitedText("\nPlease confirm the amount calculated");
 
         int choice= InteractiveMenuSelector.InteractiveMenu(new string[]
         {
@@ -103,6 +104,8 @@ internal class CashDispenser : ICashDispenser
                 return 0;
             }
             Screen.DisplaySuccessMessage("Cash returned successfully");
+            Screen.DisplayMessage("Transaction completed. No cash Deposited");
+
             return -2; // for cash not deposited
         }
         return totalAmount;

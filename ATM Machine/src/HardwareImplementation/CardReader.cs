@@ -16,7 +16,8 @@ internal class CardReader: ICardReader
         
         Screen.DisplayMessage("Enter Card Number");
         var cardNumber = Console.ReadLine();
-        if(cardNumber.Length != 16 && cardNumber.Length!=3)
+
+        if (cardNumber.Length != 16 && cardNumber.Length!=3)
         {
             Screen.DisplayErrorMessage("Invalid Card Number");
             attemptsRemaining--;

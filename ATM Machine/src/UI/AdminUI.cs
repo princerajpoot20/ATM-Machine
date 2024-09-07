@@ -8,7 +8,7 @@ namespace ATM_Machine.src.UI
     internal class AdminUI
     {
         private static ATM _atm;
-        private static AdminServices _adminServices = null;
+        private static AdminServices? _adminServices = null;
         internal static void AdminMenu(ATM atm)
         {
             _atm = atm;
@@ -25,18 +25,13 @@ namespace ATM_Machine.src.UI
         }
         internal static void AdminFeatureList()
         {
+            if(_adminServices == null) return;
             var menu = new string[]
             {
                 "Refil Cash",
                 "Change ATM Service State",
                 "Exit"
             };
-
-            //Screen.DisplayMessage("1. Refill Cash");
-            //Screen.DisplayMessage("2. Change ATM Service State");
-            //Screen.DisplayMessage("3. Exit");
-            //bool isValidChoice = InputValidator.ReadInteger(out int choice,1,3);
-            //if (!isValidChoice) return;
             int choice = InteractiveMenuSelector.InteractiveMenu(menu, 1, 3);
 
             switch (choice)
@@ -85,7 +80,7 @@ namespace ATM_Machine.src.UI
                 takeAdminDetails();
             }
             Console.WriteLine("Enter your admin pin:");
-            bool isValidPassword = InputValidator.ReadInteger(out int password);
+            bool isValidPassword = InputValidator.ReadInteger(out int password, Console.GetCursorPosition());
             _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));
         }
     }

@@ -7,17 +7,17 @@ namespace ATM_Machine.src.Services
 {
     internal class AccountService: CardAccountDetails
      // CardAccountDetails class in inherited to get the account details. 
-     // To access any account service, card and account details are needed.
+     // To access any account service: card and account details are needed.
      // it cannot cannot be exist as seperate entity.
     {
-        private static Account _account;
-        private static CashDispenser _cashDispenser;
+        private static Account? _account;
+        private static CashDispenser? _cashDispenser;
 
         private AccountService()
         {
             
         }
-        internal static AccountService GetAccountServiceInstance(Card card)
+        internal static AccountService? GetAccountServiceInstance(Card card)
         {
             var accountNumber = CardAccountDetails.GetAccountNumber(card);
             
@@ -39,6 +39,7 @@ namespace ATM_Machine.src.Services
         }
         internal void CheckBalance()
         {
+            if (_account == null) return;
             Screen.DisplayMessage("Your Current Balance is: " + _account.Balance);
             Logger.Logger.LogMessage($"{_account.AccountNumber} Checked account balance");
         }
@@ -55,13 +56,13 @@ namespace ATM_Machine.src.Services
                 _account.Balance -= amount;
                 CardAccountDetails.UpdateAccount(_account);
     
-                Console.WriteLine("\nDo you want to check updated balance?0");
+                Console.WriteLine("\nDo you want to check updated balance?");
                 var choice= InteractiveMenuSelector.YesNo();
                 
                 if (choice==1)
                     Console.WriteLine("Your Updated Balance is: {0}", _account.Balance);
                 Logger.Logger.LogMessage($"{_account.AccountNumber} Withdraw {amount} successful");
-                Screen.DisplaySuccessMessage("Cash withdraw successfully");
+                Screen.DisplaySuccessMessage("Transaction completed successfully");
                 return true;
             }
             Logger.Logger.LogMessage($"{_account.AccountNumber} Failed! Amount debited but cash does not dispense successful.");
@@ -70,6 +71,7 @@ namespace ATM_Machine.src.Services
         }
         internal void Deposit()
         {
+            if (_account == null || _cashDispenser==null) return;
             int amount= _cashDispenser.ReceiveCash();
             if (amount == -1)
             {
@@ -91,7 +93,7 @@ namespace ATM_Machine.src.Services
         internal void PinChange(Card card)
         {
             Console.WriteLine("Please Enter your new Pin");
-            bool isValidInput = InputValidator.ReadInteger(out int newPin, 1000, 9999);
+            bool isValidInput = InputValidator.ReadInteger(out int newPin,Console.GetCursorPosition(), 1000, 9999);
             if(!isValidInput) return;
             card.Pin = newPin;
             CardAccountDetails.UpdateCard(card);

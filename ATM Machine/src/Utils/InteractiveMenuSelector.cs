@@ -9,7 +9,7 @@ namespace ATM_Machine.src.Utils
     internal class InteractiveMenuSelector
     {
 
-        public static int InteractiveMenu(string[] menu, int start, int end)
+        public static int InteractiveMenu(string[] menu, int start, int end, string message="")
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
@@ -52,7 +52,6 @@ namespace ATM_Machine.src.Utils
             Console.WriteLine();
             Console.CursorVisible = true;
             Console.ResetColor();
-            Console.WriteLine("");
             return option;
         }
         public static int InteractiveMenu()

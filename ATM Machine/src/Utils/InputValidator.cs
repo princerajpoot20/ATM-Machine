@@ -4,23 +4,27 @@ namespace ATM_Machine.src.Utils
 {
     internal class InputValidator
     {
-        internal static bool ReadInteger(out int input, int startValue = int.MinValue, int endValue = int.MaxValue, int maxAttempt=2)
+        const string _blankLine = "                                                         \n";
+        internal static bool ReadInteger(out int input, (int left, int top) currentCursor, int startValue = int.MinValue, int endValue = int.MaxValue, int maxAttempt=2, string message="", bool isFailedOnce=false)
         {
-            if(maxAttempt == 0)
+            //var cursor = Console.GetCursorPosition();
+            if(message != "")
             {
-                Screen.DisplayWarningMessage("Maximum attempts reached. Exiting the application.");
-                input = -1;
-                return false;
+                Console.SetCursorPosition(currentCursor.left, currentCursor.top);
+                //Console.Write(_blank);
+                for(int i = 0; i < 8; i++) Console.Write(_blankLine);
+                Console.SetCursorPosition(currentCursor.left, currentCursor.top);
+                //Console.SetCursorPosition(currentCursor.left, currentCursor.top);
+                if(isFailedOnce)
+                    Screen.DisplayWarningMessage($"Attempt Remaining {maxAttempt}");
+                Screen.DisplayMessage(message);
             }
             var inputString = Console.ReadLine();
             bool isValid = int.TryParse(inputString, out input);
 
-
             if (!isValid)
             {
                 Screen.DisplayWarningMessage("Please enter the numeric value.");
-                //Console.Write("Press Escape to EXIT OR Press Enter to Try again");
-                //var key = Console.ReadKey();
                 int choice= InteractiveMenuSelector.InteractiveMenu();
                 if (choice==2)
                 {
@@ -29,15 +33,21 @@ namespace ATM_Machine.src.Utils
                 }
                 else if (choice==1)
                 {
-                    Console.WriteLine();
-                    return ReadInteger(out input, startValue, endValue, maxAttempt - 1);
+                    maxAttempt--;
+                    if (maxAttempt == 0)
+                    {
+                        Screen.DisplayWarningMessage("Maximum attempts reached.");
+                        input = -1;
+                        return false;
+                    }
+                    
+                    return ReadInteger(out input, currentCursor, startValue, endValue, maxAttempt, message, true);
                 }
             }
             else if (input < startValue || input > endValue)
             {
+                
                 Screen.DisplayWarningMessage($"Please enter the number from the choice given i.e between {startValue} to {endValue}.");
-                //Console.Write("Press Escape to EXIT OR Press Enter to Try again");
-                //var key = Console.ReadKey();
                 var choice= InteractiveMenuSelector.InteractiveMenu();
                 if (choice==2)
                 {
@@ -46,8 +56,15 @@ namespace ATM_Machine.src.Utils
                 }
                 else if (choice==1)
                 {
-                    Console.WriteLine();
-                    return ReadInteger(out input, startValue, endValue, maxAttempt - 1);
+                    maxAttempt--;
+                    if (maxAttempt == 0)
+                    {
+                        Screen.DisplayWarningMessage("Maximum attempts reached.");
+                        input = -1;
+                        return false;
+                    }
+                    Screen.DisplayWarningMessage($"Attempt Remaining {maxAttempt}");
+                    return ReadInteger(out input, currentCursor, startValue, endValue, maxAttempt, message, true);
                 }
             }
             return true;
