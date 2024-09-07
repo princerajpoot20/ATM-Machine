@@ -20,7 +20,7 @@ abstract public  class MonitorScreen
         Console.WriteLine(message);
         Console.ResetColor();
     }
-    public abstract void DisplaySuccessMessage(string message);
+    //public abstract void DisplaySuccessMessage(string message);
 }
 public class Screen : MonitorScreen
 {

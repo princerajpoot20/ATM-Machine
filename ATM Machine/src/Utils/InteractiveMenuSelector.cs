@@ -14,7 +14,7 @@ namespace ATM_Machine.src.Utils
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
 
-            Console.WriteLine("\nUse ⬆️  and ⬇️  to navigate and press \u001b[32mEnter\u001b[0m to select:");
+            Console.WriteLine("\nUse ⬆️ and ⬇️ to navigate and press \u001b[32mEnter\u001b[0m to select:");
             var cursor = Console.GetCursorPosition();
             var option = 1;
             var decorator = "✅ \u001b[32m";
@@ -49,9 +49,10 @@ namespace ATM_Machine.src.Utils
                 }
             }
 
-            Console.WriteLine($"\n{decorator}You selected: {menu[option-1]}");
+            Console.WriteLine();
             Console.CursorVisible = true;
             Console.ResetColor();
+            Console.WriteLine("");
             return option;
         }
         public static int InteractiveMenu()
@@ -59,5 +60,9 @@ namespace ATM_Machine.src.Utils
             return InteractiveMenu(new string[] { "Retry", "EXIT" }, 1, 2);
         }
 
+        public static int YesNo()
+        {
+            return InteractiveMenu(new string[] { "Yes", "No" }, 1, 2);
+        }
     }
 }

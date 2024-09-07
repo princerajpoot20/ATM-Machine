@@ -14,12 +14,12 @@ internal class CashDispenser : ICashDispenser
     }
     public bool Dispense(Dictionary<CurrencyDenomination, int> cash)
     {
-        Console.WriteLine("-----Dispensing Cash-----");
+        Console.WriteLine("\n-----Dispensing Cash-----");
         foreach (var currency in cash)
         {
             Console.WriteLine(currency.Key.ToString() + " of " + currency.Value + " notes.");
         }
-        Console.WriteLine("------Dispensing Cash-----");
+        Console.WriteLine("------Dispensing Cash-----\n");
 
         return true;
     }
@@ -73,25 +73,10 @@ internal class CashDispenser : ICashDispenser
             cash[denomination] = count;
             totalAmount = totalAmount + ((int)denomination * count);
         }
-
-        Console.WriteLine("------Please wait validating cash-------");
-        Thread.Sleep(10000);
-
-        if(totalAmount==0)
+        if (totalAmount == 0)
         {
             Console.WriteLine("No cash inserted");
-            return -1;
-        }
-
-        Console.WriteLine("----Total cash inserted in machine: {0}", totalAmount);
-
-        Console.WriteLine("----Press Enter to CONFIRM!-----");
-
-        ConsoleKeyInfo keyInfo = Console.ReadKey();
-        if (keyInfo.Key != ConsoleKey.Enter)
-        {
-            Console.WriteLine("No cash inserted");
-            return -1;
+            return -2;
         }
         Console.Write("\nPlease wait validating cash ");
         WaitTimer.ProcessingWait(4);

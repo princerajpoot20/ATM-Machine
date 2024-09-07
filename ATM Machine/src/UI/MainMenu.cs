@@ -17,29 +17,24 @@ public class MainMenu
     
     internal MainMenu(ATM atm)
     {
-        _cardReader = new CardReader();
-        _atm = atm;
-    }
-    public void ShowMainMenu()
-    {
         
-        Screen.DisplayHeading("<<Welcome to ATM Machine>>");
-        //Screen.DisplayMessage("==========================");
+    }
 
-    static MainMenu()
+
+     static MainMenu()
     {
          // Static constructor to initialize the ATM instance
          // will get automatically called when the class is loaded
          // This will be used to maintain atm specific tasks/activity
          // Like checking if this atm is out of service or not.
         _atm = ATM.getAtmInstance(123);
+        
     }
     public static void ShowHomeMenu()
     {
         Console.Clear();
         Screen.DisplayHeading("                                  Welcome to ATM                                  ");
             //Screen.DisplayMessage("==========================");
-        Screen.DisplayMessage("Please insert your card");
         if (_atm.atmState == AtmState.OutOfService)
         {
             Screen.DisplayHighlitedText("Sorry!! ATM is Out of Service");
@@ -63,32 +58,56 @@ public class MainMenu
             Console.SetCursorPosition(0, Console.CursorTop - 2);
             Console.WriteLine("                               ");
             UserMenu();
-            ShowHomeMenu();
         
     }
 
-    public static void UserMenu()
+    internal static void UserMenu()
     {
         Console.Clear();
         _card = CardReader.ReadCard();
-            if (_card == null) return;
+        if (_card == null)
+        {
+            Console.Write("\nRedirecting to home in ");
+            WaitTimer.Wait(5);
+            ShowHomeMenu();
+            return;
+        }
         bool isVerified = CardAccountDetails.VerifyCardDetails(_card);
-        if (!isVerified) return;
-        _accountService = new AccountService(_card);
+        if (!isVerified)
+        {
+            Console.Write("\nRedirecting to home in ");
+            WaitTimer.Wait(5);
+            ShowHomeMenu();
+            return;
+        }
+
+        _accountService = AccountService.GetAccountServiceInstance(_card);
+        if (_accountService == null ) {
+            Console.Write("\nRedirecting to home in ");
+            WaitTimer.Wait(5);
+            ShowHomeMenu();
+            return;
+        }
         Console.Clear();
             
-        Screen.DisplayHeading($"Welcome {_accountService.GetAccountHolderName()}!");
+        UserServicesMenu();
+
+    }
+    public static void UserServicesMenu()
+    {
+        Console.Clear();
+        Screen.DisplayHeading($"                                  Welcome {_accountService.GetAccountHolderName()}!                                  ");
         string[] menu = new string[]
                     {
-        "Withdraw Cash",
-        "Deposit Cash",
-        "Check Balance",
-        "Account Services",
-        "Exit"
+            "Withdraw Cash",
+            "Deposit Cash",
+            "Check Balance",
+            "Account Services",
+            "Exit"
         };
 
         //bool isValidInput = InputValidator.ReadInteger(out int choice, 1,5);
-        int choice =InteractiveMenuSelector.InteractiveMenu(menu, 1, 5);
+        int choice = InteractiveMenuSelector.InteractiveMenu(menu, 1, 5);
 
         //if(!isValidInput) return;
         switch (choice)
@@ -96,7 +115,7 @@ public class MainMenu
             case 1:
                 Console.WriteLine("Enter Amount to withdraw: ");
                 bool isValid = InputValidator.ReadInteger(out int amount, 0);
-                if(isValid)
+                if (isValid)
                     _accountService.Withdraw(amount);
                 break;
             case 2:
@@ -108,10 +127,25 @@ public class MainMenu
             case 4:
                 ShowAccountServices();
                 break;
+            case 5:
+                ShowHomeMenu();
+                return;
             default:
                 Console.WriteLine("Invalid Choice");
                 break;
         }
+
+        Console.WriteLine("\n\nDo you want to perform another transaction?");
+        choice = InteractiveMenuSelector.YesNo();
+        if (choice == 2)
+        {
+            Console.WriteLine("Thank you for using our services");
+            Console.Write("\nRedirecting to home in ");
+            WaitTimer.Wait(5);
+            ShowHomeMenu();
+            return;
+        }
+        UserServicesMenu();
     }
     public static void ShowAccountServices()
     {

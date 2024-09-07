@@ -10,19 +10,32 @@ namespace ATM_Machine.src.Services
      // To access any account service, card and account details are needed.
      // it cannot cannot be exist as seperate entity.
     {
-        private Account _account;
-        private CashDispenser _cashDispenser;
+        private static Account _account;
+        private static CashDispenser _cashDispenser;
 
-        internal AccountService(Card card)
+        private AccountService()
+        {
+            
+        }
+        internal static AccountService GetAccountServiceInstance(Card card)
         {
             var accountNumber = CardAccountDetails.GetAccountNumber(card);
-            _account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
-            if (_account == null)
+            
+            if (accountNumber == null)
             {
                 Logger.Logger.LogMessage($"{card.CardNumber} Failed!! Card is not linked to any account");
-                throw new System.Exception("Card is not linked to any account");
+                Screen.DisplayWarningMessage("Card is not linked to any account");
+                return null;
             }
-            _cashDispenser= new CashDispenser(_account);
+            _account = GetAccountDetailsByAccountNumber(accountNumber);
+            if (_account == null)
+            {
+                Logger.Logger.LogMessage($"{card.CardNumber} Failed!! Account details not found");
+                Screen.DisplayWarningMessage("Account details not found");
+                return null;
+            }
+            _cashDispenser = new CashDispenser(_account);
+            return new AccountService();
         }
         internal void CheckBalance()
         {
@@ -41,16 +54,18 @@ namespace ATM_Machine.src.Services
             {
                 _account.Balance -= amount;
                 CardAccountDetails.UpdateAccount(_account);
-                Console.WriteLine("----Balance Update Successfully----");
-                Console.WriteLine("Press Enter to Display the updated balance");
-                Console.WriteLine("Press any key to continue");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                if (keyInfo.Key == ConsoleKey.Enter)
-                    Console.WriteLine("---Your Updated Balance is: {0}", _account.Balance);
+    
+                Console.WriteLine("\nDo you want to check updated balance?0");
+                var choice= InteractiveMenuSelector.YesNo();
+                
+                if (choice==1)
+                    Console.WriteLine("Your Updated Balance is: {0}", _account.Balance);
                 Logger.Logger.LogMessage($"{_account.AccountNumber} Withdraw {amount} successful");
+                Screen.DisplaySuccessMessage("Cash withdraw successfully");
                 return true;
             }
             Logger.Logger.LogMessage($"{_account.AccountNumber} Failed! Amount debited but cash does not dispense successful.");
+            Screen.DisplayWarningMessage("Amount debited but cash does not dispense");
             return false;
         }
         internal void Deposit()
@@ -63,10 +78,14 @@ namespace ATM_Machine.src.Services
                 
                 return;
             }
+            else if (amount == -2)
+            {
+                return;
+            }
             
             _account.Balance += amount;
             CardAccountDetails.UpdateAccount(_account);
-            Console.WriteLine("---Cash Deposit Successful---");
+            Screen.DisplaySuccessMessage("Cash Deposit Successful");
             Logger.Logger.LogMessage($"{_account.AccountNumber} Amount {amount} deposited successful");
         }
         internal void PinChange(Card card)

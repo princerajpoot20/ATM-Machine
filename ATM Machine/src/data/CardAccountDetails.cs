@@ -62,7 +62,6 @@ namespace ATM_Machine.src.data
                     return new Account(data[0], data[1], data[2], Convert.ToInt32(data[3]));
                 }
             }
-
             return null;
         }
 
