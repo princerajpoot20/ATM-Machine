@@ -5,58 +5,91 @@ using ATM_Machine.src.Utils;
 
 namespace ATM_Machine.src.Services
 {
-    internal class AccountService
+    internal class AccountService: CardAccountDetails
+     // CardAccountDetails class in inherited to get the account details. 
+     // To access any account service, card and account details are needed.
+     // it cannot cannot be exist as seperate entity.
     {
-        private CashDispenser _cashDispenser= new CashDispenser();
-        private Keypad _keypad= new Keypad();
-        private Card _card;
+        private Account _account;
+        private CashDispenser _cashDispenser;
 
-
-        internal int CheckBalance(Account account)
+        private AccountService(Account account)
         {
-            return account.Balance;
+            _account = account;
+            _cashDispenser = new CashDispenser(_account);
+        }
+        internal static AccountService GetAccountServiceInstance(Card card)
+        {
+           
+            var accountNumber = CardAccountDetails.GetAccountNumber(card);
+            if (accountNumber == null)
+            {
+                Logger.Logger.LogMessage($"{card.CardNumber} Failed!! Card is not linked to any account");
+                Screen.DisplayErrorMessage("Card is not linked to any account");
+                Screen.DisplayMessage("Please remove your card");
+                Console.Write("Redirecting to home in... ");
+                WaitTimer.Wait(6);
+                return null;
+            }
+            Account account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
+            if (account == null)
+            {
+                Logger.Logger.LogMessage($"{card.CardNumber} Failed!! Not able to locate account");
+                Screen.DisplayErrorMessage("Not able to locate account.");
+                Screen.DisplayMessage("Please remove your card");
+                Console.Write("Redirecting to home in... ");
+                WaitTimer.Wait(6);
+                return null;
+            }
+            return new AccountService(account);
+        }
+        internal void CheckBalance()
+        {
+            Screen.DisplayMessage("Your Current Balance is: " + _account.Balance);
+            Logger.Logger.LogMessage($"{_account.AccountNumber} Checked account balance");
         }
 
-        internal bool Withdraw(Account account, int amount)
+        internal bool Withdraw(int amount)
         {
-            if (account.Balance < amount)
+            if (_account.Balance < amount)
             {
                 Console.WriteLine("Insufficient balance");
                 return false;
             }
-
-
             if (_cashDispenser.DispenseCash(amount))
             {
-                account.Balance -= amount;
-                CardAccountDetails.UpdateAccount(account);
-                Console.WriteLine("----Balance Update Successfully----");
-                Console.WriteLine("Press Enter to Display the updated balance");
-                Console.WriteLine("Press any key to continue");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                if (keyInfo.Key == ConsoleKey.Enter)
-                    Console.WriteLine("---Your Updated Balance is: {0}", account.Balance);
+                _account.Balance -= amount;
+                CardAccountDetails.UpdateAccount(_account);
+                Screen.DisplaySuccessMessage("Transaction Successfully");
+                Screen.DisplayMessage("Do you want to check your updated balance?");
+                int choice = InteractiveMenuSelector.YesNo();
+                if (choice == 1)
+                    Console.WriteLine("Your Updated Balance is: {0}", _account.Balance);
+                Logger.Logger.LogMessage($"{_account.AccountNumber} Withdraw {amount} successful");
                 return true;
             }
-
-
+            Logger.Logger.LogMessage($"{_account.AccountNumber} Failed! Amount debited but cash does not dispense successful.");
             return false;
         }
-
-        internal void Deposit(Account account)
+        internal void Deposit()
         {
             int amount= _cashDispenser.ReceiveCash();
-            if (amount == -1) return;
-            if(amount == 0 )
+            if (amount == -1)
             {
-                Console.WriteLine("No cash deposited");
+                Screen.DisplayWarningMessage("Cash Deposit Failed");
+                Logger.Logger.LogMessage($"{_account.AccountNumber} Amount deposited failed. No cash collected");
+                
                 return;
             }
-            account.Balance += amount;
-            CardAccountDetails.UpdateAccount(account);
-            Console.WriteLine("---Cash Deposit Successful---");
+            if (amount == -2) { 
+                Screen.DisplaySuccessMessage("No cash deposited.");
+            }
+            
+            _account.Balance += amount;
+            CardAccountDetails.UpdateAccount(_account);
+            Screen.DisplaySuccessMessage("Cash Deposit Successful");
+            Logger.Logger.LogMessage($"{_account.AccountNumber} Amount {amount} deposited successful");
         }
-
         internal void PinChange(Card card)
         {
             Console.WriteLine("Please Enter your new Pin");
@@ -64,16 +97,12 @@ namespace ATM_Machine.src.Services
             if(!isValidInput) return;
             card.Pin = newPin;
             CardAccountDetails.UpdateCard(card);
-            Console.WriteLine("Pin Change Successfully");
-
+            Screen.DisplaySuccessMessage("Pin Change Successfully");
+            Logger.Logger.LogMessage($"{card.CardNumber} Pin change successful");
         }
-        internal void MobileChange(Account account)
+        internal string GetAccountHolderName()
         {
-            Console.WriteLine("Please Enter your new Mobile Number");
-            var newMobile = _keypad.ReadKeyPad();
-            account.MobileNumber = newMobile;
-            CardAccountDetails.UpdateAccount(account);
-            Console.WriteLine("Mobile Number Updated Successfully");
+            return _account.Name;
         }
     }
 }

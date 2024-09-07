@@ -3,6 +3,7 @@ using ATM_Machine.HardwareInterface;
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
+using ATM_Machine.src.Utils;
 using ATM_Machine.UI;
 
 class Program
@@ -11,7 +12,7 @@ class Program
     {
         // Admin Testing
         //var adminServices = new AdminServices();
-        
+
         //adminServices.UpdateCashStorage(CurrencyDenomination.Fifty,10);
         //adminServices.UpdateCashStorage(CurrencyDenomination.FiveHundred,10);
 
@@ -37,7 +38,7 @@ class Program
 
 
 
-        
+
         //ICashDispenser cashDispenser= new CashDispenser();
         //ICardReader cardReader = new CardReader();
 
@@ -62,7 +63,15 @@ class Program
         //    Console.WriteLine("Authentication failed");
 
         //}
-        MainMenu mainMenu = new MainMenu(new CardReader(), new AccountService(), ATM.getAtmInstance(123));
-        mainMenu.ShowMainMenu();
+        //var menu = new string []{
+        //    "1. Withdraw Cash",
+        //    "2. Deposit Cash",
+        //    "3. Check Balance",
+        //    "4. Account Services"
+        //};
+
+        //Console.WriteLine(InteractiveMenuSelector.InteractiveMenu(menu, 1,4));
+
+        MainMenu.ShowHomeMenu();
     }
 }

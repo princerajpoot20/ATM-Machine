@@ -5,7 +5,7 @@ using System.Text;
 namespace ATM_Machine.src.data
 {
 
-    public class CardAccountDetails
+    internal class CardAccountDetails
     {
         private const string _cardDetailsPath =
             @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\card_details.csv";
@@ -18,7 +18,7 @@ namespace ATM_Machine.src.data
         private const string _cashStoragePath =
             @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\cash_storage.csv";
 
-        public static bool VerifyCardDetails(Card card)
+        internal static bool VerifyCardDetails(Card card)
         {
             var lines = File.ReadAllLines(_cardDetailsPath);
             lines = lines.Skip(1).ToArray();
@@ -36,7 +36,7 @@ namespace ATM_Machine.src.data
             return false;
         }
 
-        public static string GetAccountNumber(Card card)
+        protected static string? GetAccountNumber(Card card)
         {
             var lines = File.ReadAllLines(_cardAccountMappingPath);
             foreach (var line in lines)
@@ -51,7 +51,7 @@ namespace ATM_Machine.src.data
             return null;
         }
 
-        public static Account GetAccountDetailsByAccountNumber(string accountNumber)
+        protected static Account GetAccountDetailsByAccountNumber(string accountNumber)
         {
             var lines = File.ReadAllLines(_accountDetailsPath);
             foreach (var line in lines)
@@ -66,25 +66,9 @@ namespace ATM_Machine.src.data
             return null;
         }
 
-        public static int GetCashCount(CurrencyDenomination denomination)
-        {
-            var lines = File.ReadAllLines(_cashStoragePath);
-            foreach (var line in lines)
-            {
-                var data = line.Split(',');
-                // we need to convert data[0] to currenydenomination 
-                if (Enum.TryParse(data[0], out CurrencyDenomination foundDenomination) &&
-                    foundDenomination == denomination)
-                {
-                    return int.Parse(data[1]);
-                }
 
-            }
 
-            return 0;
-        }
-
-        public static void UpdateAccount(Account account)
+        protected static void UpdateAccount(Account account)
         {
             StringBuilder builder = new StringBuilder();
 
@@ -110,7 +94,7 @@ namespace ATM_Machine.src.data
             }
         }
 
-        public static void UpdateCard(Card card)
+        protected static void UpdateCard(Card card)
         {
             StringBuilder builder = new StringBuilder();
 
@@ -136,7 +120,7 @@ namespace ATM_Machine.src.data
             }
         }
 
-        public static void UpdateMobileNumber(Account account, string newMobileNumber)
+        protected static void UpdateMobileNumber(Account account, string newMobileNumber)
         {
             Console.WriteLine("Need to implement this");
         }

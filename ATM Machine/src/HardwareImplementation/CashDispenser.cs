@@ -5,21 +5,25 @@ using ATM_Machine.src.Utils;
 
 namespace ATM_Machine.HardwareImplementation;
 
-public class CashDispenser : ICashDispenser
+internal class CashDispenser : ICashDispenser
 {
-    public bool Dispense(Dictionary<CurrencyDenomination, int> cash)
+    private Account _account;
+    internal CashDispenser(Account account)
+    {
+        _account = account;
+    }
+    internal bool Dispense(Dictionary<CurrencyDenomination, int> cash)
     {
         Console.WriteLine("-----Dispensing Cash-----");
         foreach (var currency in cash)
         {
-            // call update cash to update the cash storage csv. Need to implement this !!
             Console.WriteLine(currency.Key.ToString() + " of " + currency.Value + " notes.");
         }
         Console.WriteLine("------Dispensing Cash-----");
 
         return true;
     }
-    public  bool DispenseCash(int amount)
+    public bool DispenseCash(int amount)
     {
         // need to fix this. we need to sort this in descending order as we need higher denomination first.
         //Fixed Done. :)
@@ -28,17 +32,19 @@ public class CashDispenser : ICashDispenser
 
         foreach (var denomination in denominations)
         {
-            int count= amount / (int)denomination;
-            int available = CardAccountDetails.GetCashCount(denomination) ;
-            if(count > available)
+            int count = amount / (int)denomination;
+            int available = CashDetails.GetCashCount(denomination);
+            if (count <= available)
             {
-                Console.WriteLine("Cash not available");
-                return false;
+                cash[denomination] = count;
+                amount -= count * (int)denomination;
             }
-            cash[denomination]= count;
-            amount -= count * (int)denomination;
+            else if (available != 0)
+            {
+                cash[denomination] = available;
+                amount -= available * (int)denomination;
+            }
         }
-
         if (amount > 0)
         {
             Console.WriteLine("Unable to dispense exact amount due to denomination limitation.");
@@ -52,14 +58,14 @@ public class CashDispenser : ICashDispenser
     {
 
         // Need to implement this !!
-        Console.WriteLine("-------Cash Dispenser Hardware--------");
-        Console.WriteLine("-------Enter Details of notes for deposition-----");
+        Screen.DisplayHeading("Cash Dispenser");
+        Console.WriteLine("Enter Details of notes for deposition");
         Dictionary<CurrencyDenomination, int> cash = new Dictionary<CurrencyDenomination, int>();
         int totalAmount = 0;
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {
             Console.WriteLine("Enter the quantity of notes {0}", denomination);
-            bool isValidInput = InputValidator.ReadInteger(out int count, 0);
+            bool isValidInput = InputValidator.ReadInteger(out int count, 0, 1000);
             if (!isValidInput)
             {
                 return -1;
@@ -68,16 +74,27 @@ public class CashDispenser : ICashDispenser
             totalAmount = totalAmount + ((int)denomination * count);
         }
 
-        Console.WriteLine("------Please wait validating cash-------");
-        Thread.Sleep(10000);
-        Console.WriteLine("----Total cash inserted in machine: {0}", totalAmount);
-
-        Console.WriteLine("----Press Enter to CONFIRM!-----");
-
-        ConsoleKeyInfo keyInfo = Console.ReadKey();
-        if (keyInfo.Key != ConsoleKey.Enter)
+        if (totalAmount == 0)
         {
-            Console.WriteLine("------Returning cash back--------");
+            Console.WriteLine("No cash inserted");
+            return -1;
+        }
+        Console.Write("\nPlease wait validating cash ");
+        WaitTimer.ProcessingWait(4);
+        Console.WriteLine("\n----------------------------------");
+        Console.WriteLine("\nTotal cash inserted in machine: {0}", totalAmount);
+
+        Console.WriteLine("Please confirm the amount calculated");
+
+        int choice= InteractiveMenuSelector.InteractiveMenu(new string[]
+        {
+            "Yes",
+            "Return the cash"
+        }, 1,2);
+
+        if (choice==2)
+        {
+            Screen.DisplayHighlitedText("Returning cash back");
             bool isDispensed= Dispense(cash);
             if (!isDispensed)
             {
@@ -86,9 +103,9 @@ public class CashDispenser : ICashDispenser
                 Console.WriteLine("Please contact the branch. Sorry for inconvience.");
                 return 0;
             }
-            Console.WriteLine("Cash returned successfully");
+            Screen.DisplaySuccessMessage("Cash returned successfully");
+            return -2; // for cash not deposited
         }
         return totalAmount;
-
     }
 }

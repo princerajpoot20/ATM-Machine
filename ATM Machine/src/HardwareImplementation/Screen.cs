@@ -2,7 +2,11 @@
 
 namespace ATM_Machine.HardwareImplementation;
 
-public abstract class MonitorScreen
+// Used abstract class here.
+// Abstract class can have abstract methods and non abstract methods.
+// Abstract class are used to inherit some common functionality.
+// And in addition some abstract method that will define
+abstract public  class MonitorScreen
 {
     public static void DisplayMessage(string s)
     {
@@ -16,6 +20,7 @@ public abstract class MonitorScreen
         Console.WriteLine(message);
         Console.ResetColor();
     }
+    public abstract void DisplaySuccessMessage(string message);
 }
 public class Screen : MonitorScreen
 {
