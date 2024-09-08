@@ -9,10 +9,8 @@ namespace ATM_Machine.src.data
     {
         private const string _cardDetailsPath =
             @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\card_details.csv";
-
         private const string _cardAccountMappingPath =
             @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\card_account_mapping.csv";
-
         private const string _accountDetailsPath =
             @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\account_details.csv";
         private const string _cashStoragePath =
@@ -65,8 +63,6 @@ namespace ATM_Machine.src.data
             return null;
         }
 
-
-
         protected static void UpdateAccount(Account account)
         {
             StringBuilder builder = new StringBuilder();
@@ -85,7 +81,6 @@ namespace ATM_Machine.src.data
                     }
                     builder.AppendLine(line);
                 }
-
             }
             using (StreamWriter writer = new StreamWriter(_accountDetailsPath, false)) // false to overwrite the file
             {
@@ -111,14 +106,12 @@ namespace ATM_Machine.src.data
                     }
                     builder.AppendLine(line);
                 }
-
             }
             using (StreamWriter writer = new StreamWriter(_cardDetailsPath, false)) // false to overwrite the file
             {
                 writer.Write(builder.ToString());
             }
         }
-
         protected static void UpdateMobileNumber(Account account, string newMobileNumber)
         {
             Console.WriteLine("Need to implement this");

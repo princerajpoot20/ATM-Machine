@@ -3,9 +3,9 @@ using System.Text;
 
 namespace ATM_Machine.HardwareImplementation;
 
-public class Keypad: IKeyPad
+internal class Keypad: IKeyPad
 {
-    public static string ReadSenstiveData()
+    internal static string ReadSenstiveData()
     {
         StringBuilder input = new StringBuilder();
         while (true)

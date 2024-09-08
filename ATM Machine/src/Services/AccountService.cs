@@ -13,10 +13,7 @@ namespace ATM_Machine.src.Services
         private static Account? _account;
         private static CashDispenser? _cashDispenser;
 
-        private AccountService()
-        {
-            
-        }
+        private AccountService() { }
         internal static AccountService? GetAccountServiceInstance(Card card)
         {
             var accountNumber = CardAccountDetails.GetAccountNumber(card);

@@ -1,6 +1,6 @@
 ﻿namespace ATM_Machine.HardwareInterface;
 
-public interface IKeyPad
+internal interface IKeyPad
 {
     String ReadKeyPad();
 }

@@ -37,7 +37,6 @@ public class AtmDetails
         {
             while ((line = reader.ReadLine()) != null)
             {
-
                 var data = line.Split(',');
                 if (Convert.ToInt32(data[0]) == atm.AtmID)
                 {
@@ -45,7 +44,6 @@ public class AtmDetails
                 }
                 builder.AppendLine(line);
             }
-
         }
         using (StreamWriter writer = new StreamWriter(_atmDetailsPath, false)) // false to overwrite the file
         {

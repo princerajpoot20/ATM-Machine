@@ -7,13 +7,11 @@ namespace ATM_Machine.HardwareImplementation;
 
 internal class CardReader: ICardReader
 {
-    public static Card? ReadCard()
+    internal static Card? ReadCard()
     {
-        
         Screen.DisplayHighlitedText("Card Reader");
         int attemptsRemaining = 3;
-        start1:
-        
+        start1: 
         Screen.DisplayMessage("Enter Card Number");
         var cardNumber = Console.ReadLine();
 

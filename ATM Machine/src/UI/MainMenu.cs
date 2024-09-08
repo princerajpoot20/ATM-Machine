@@ -14,26 +14,25 @@ namespace ATM_Machine.UI {
         private static Card _card;
         private static AccountService _accountService;
         private static ATM _atm;
-    
+        // atm id will remain same throught. 
+        const int _atmId = 123;
         internal MainMenu(ATM atm)
         {
-        
+            _atm = atm;
         }
-
-
         static MainMenu()
         {
              // Static constructor to initialize the ATM instance
              // will get automatically called when the class is loaded
              // This will be used to maintain atm specific tasks/activity
              // Like checking if this atm is out of service or not.
-            _atm = ATM.getAtmInstance(123);
+            _atm = ATM.getAtmInstance(_atmId);
+            
         }
         public static void ShowHomeMenu()
         {
             Console.Clear();
             Screen.DisplayHeading("                                  Welcome to ATM                                  ");
-                //Screen.DisplayMessage("==========================");
             if (_atm.atmState == AtmState.OutOfService)
             {
                 Screen.DisplayHighlitedText("Sorry!! ATM is Out of Service");
@@ -46,17 +45,17 @@ namespace ATM_Machine.UI {
                 }
                 return;
             }
-                Screen.DisplayHighlitedText("\nPress any key to begin!");
-                //InteractiveMenuSelector.InteractiveMenu(new string[] { "Press Enter to begin." }, 1, 1);
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                if (keyInfo.Key == ConsoleKey.Escape)
-                {
-                    AdminUI.AdminMenu(_atm);
-                }
-                Console.SetCursorPosition(0, Console.CursorTop - 2);
-                Console.WriteLine("                               ");
-                UserMenu();
-        
+            Screen.DisplayHighlitedText("\nPress any key to begin!");
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+            if (keyInfo.Key == ConsoleKey.Escape)
+            {
+                AdminUI.AdminMenu(_atm);
+                ShowHomeMenu();
+                return;
+            }
+            Console.SetCursorPosition(0, Console.CursorTop - 2);
+            Console.WriteLine("                               ");
+            UserMenu();
         }
 
         internal static void UserMenu()
@@ -86,9 +85,7 @@ namespace ATM_Machine.UI {
                 return;
             }
             Console.Clear();
-            
             UserServicesMenu();
-
         }
         public static void UserServicesMenu()
         {
@@ -102,17 +99,11 @@ namespace ATM_Machine.UI {
                 "Account Services",
                 "Exit"
             };
-
-            //bool isValidInput = InputValidator.ReadInteger(out int choice, 1,5);
             int choice = InteractiveMenuSelector.InteractiveMenu(menu, 1, 5);
-
-            //if(!isValidInput) return;
             switch (choice)
             {
                 case 1:
-                    //Console.WriteLine();
-                    var cursorPosition = Console.GetCursorPosition();
-                    bool isValid = InputValidator.ReadInteger(out int amount, cursorPosition, 0, 100000,2, "Enter Amount to withdraw: ");
+                    bool isValid = InputValidator.ReadInteger(out int amount, Console.GetCursorPosition(), 0, 100000,2, "Enter Amount to withdraw: ");
                     if (isValid)
                         _accountService.Withdraw(amount);
                     break;
@@ -132,7 +123,6 @@ namespace ATM_Machine.UI {
                     Console.WriteLine("Invalid Choice");
                     break;
             }
-
             Console.WriteLine("\n\nDo you want to perform another transaction?");
             choice = InteractiveMenuSelector.YesNo();
             if (choice == 2)

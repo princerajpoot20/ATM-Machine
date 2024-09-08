@@ -7,7 +7,6 @@ namespace ATM_Machine.src.Utils
         const string _blankLine = "                                                         \n";
         internal static bool ReadInteger(out int input, (int left, int top) currentCursor, int startValue = int.MinValue, int endValue = int.MaxValue, int maxAttempt=2, string message="", bool isFailedOnce=false)
         {
-            //var cursor = Console.GetCursorPosition();
             if(message != "")
             {
                 Console.SetCursorPosition(currentCursor.left, currentCursor.top);

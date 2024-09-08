@@ -19,7 +19,6 @@ namespace ATM_Machine.src.data
                     return true;
                 }
             }
-
             return false;
         }
     }

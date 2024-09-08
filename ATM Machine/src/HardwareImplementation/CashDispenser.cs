@@ -23,7 +23,7 @@ internal class CashDispenser : ICashDispenser
 
         return true;
     }
-    public bool DispenseCash(int amount)
+    internal bool DispenseCash(int amount)
     {
         // need to fix this. we need to sort this in descending order as we need higher denomination first.
         //Fixed Done. :)
@@ -54,10 +54,8 @@ internal class CashDispenser : ICashDispenser
         return Dispense(cash);
     }
 
-    public int ReceiveCash()
+    internal int ReceiveCash()
     {
-
-        // Need to implement this !!
         Screen.DisplayHeading("Cash Dispenser");
         Console.WriteLine("Enter Details of notes for deposition");
         Dictionary<CurrencyDenomination, int> cash = new Dictionary<CurrencyDenomination, int>();
@@ -65,7 +63,6 @@ internal class CashDispenser : ICashDispenser
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {
             var temp = $"Enter the quantity of notes {denomination}"; 
-            //Console.WriteLine(temp);
             bool isValidInput = InputValidator.ReadInteger(out int count, Console.GetCursorPosition(), 0, 500, 2,temp);
             if (!isValidInput)
             {
@@ -83,7 +80,6 @@ internal class CashDispenser : ICashDispenser
         WaitTimer.ProcessingWait(4);
         Console.WriteLine("\n----------------------------------");
         Console.WriteLine("\nTotal cash inserted in machine: {0}", totalAmount);
-
         Screen.DisplayHighlitedText("\nPlease confirm the amount calculated");
 
         int choice= InteractiveMenuSelector.InteractiveMenu(new string[]

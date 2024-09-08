@@ -14,14 +14,16 @@ namespace ATM_Machine.src.UI
             _atm = atm;
             Console.Clear();
             Screen.DisplayHighlitedText("WWelcome to Admin Panel");
-
             adminVerification();
-            if (_adminServices == null) return;
-
+            if (_adminServices == null)
+            {
+                Console.Write("Returning to home in ");
+                WaitTimer.Wait(4);
+                return;
+            }
             Screen.DisplaySuccessMessage("Authentication Successful");
             Logger.Logger.LogMessage($"{_adminServices._admin.adminId} (Admin) Logged in Successful.");
             AdminFeatureList();
-
         }
         internal static void AdminFeatureList()
         {
@@ -33,7 +35,6 @@ namespace ATM_Machine.src.UI
                 "Exit"
             };
             int choice = InteractiveMenuSelector.InteractiveMenu(menu, 1, 3);
-
             switch (choice)
             {
                 case 1:
@@ -54,9 +55,9 @@ namespace ATM_Machine.src.UI
             takeAdminDetails();
             if (_adminServices == null && attemptsRemaining > 0)
             {
-                Screen.DisplayMessage("Press Escape to EXIT OR Press anykey to Try again");
-                var key = Console.ReadKey();
-                if (key.Key == ConsoleKey.Escape) return;
+                int choice = InteractiveMenuSelector.InteractiveMenu();
+                if (choice==2) return;
+                Screen.DisplayWarningMessage("Attempts Remaining: " + attemptsRemaining);
                 adminVerification(attemptsRemaining - 1);
             }
             else if (_adminServices == null)
@@ -73,15 +74,23 @@ namespace ATM_Machine.src.UI
             {
                 Screen.DisplayErrorMessage("Admin Id cannot be empty.");
                 int retryChoice = InteractiveMenuSelector.InteractiveMenu();
-                if (retryChoice == 2)
-                {
-                    return;
-                }
+                if (retryChoice == 2) return;
                 takeAdminDetails();
             }
             Console.WriteLine("Enter your admin pin:");
-            bool isValidPassword = InputValidator.ReadInteger(out int password, Console.GetCursorPosition());
-            _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, password));
+            var password = Keypad.ReadSenstiveData();
+            bool isPin = int.TryParse(password, out int pin);
+            if (!isPin)
+            {
+                Screen.DisplayErrorMessage("Invalid Pin. Pin should be integral.");
+                return;
+            }
+            if(pin < 1000 || pin > 9999)
+            {
+                Screen.DisplayErrorMessage("Invalid Pin. Pin should be of 4 digits.");
+                return;
+            }
+            _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, pin));
         }
     }
 }

@@ -75,5 +75,4 @@ internal class AdminServices : AdminDetails
         Screen.DisplaySuccessMessage("Cash Storage updated :)");
         Logger.Logger.LogMessage($"{_admin} Updated the Cash Storage");
     }
-
 }

@@ -23,7 +23,6 @@ public class CashDetails
         {
             writer.Write(builder.ToString());
         }
-
     }
     internal static int GetCashCount(CurrencyDenomination denomination)
     {
