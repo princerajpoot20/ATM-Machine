@@ -11,7 +11,7 @@ namespace ATM_Machine.src.Utils
 
         public static int InteractiveMenu(string[] menu, int start, int end, string message="")
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8; // for emoji :)
             Console.CursorVisible = false;
 
             Console.WriteLine("\nUse ⬆️ and ⬇️ to navigate and press \u001b[32mEnter\u001b[0m to select:");

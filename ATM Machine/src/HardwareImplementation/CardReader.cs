@@ -7,26 +7,26 @@ namespace ATM_Machine.HardwareImplementation;
 
 internal class CardReader: ICardReader
 {
-    internal static Card? ReadCard()
+    public static Card? ReadCard()
     {
-        Screen.DisplayHighlitedText("Card Reader");
+        AtmScreen.DisplayHighlitedText("Card Reader");
         int attemptsRemaining = 3;
         start1: 
-        Screen.DisplayMessage("Enter Card Number");
+        AtmScreen.DisplayMessage("Enter Card Number");
         var cardNumber = Console.ReadLine();
 
         if (cardNumber.Length != 16 && cardNumber.Length!=3)
         {
-            Screen.DisplayErrorMessage("Invalid Card Number");
+            AtmScreen.DisplayErrorMessage("Invalid Card Number");
             attemptsRemaining--;
             if (attemptsRemaining == 0) {
-                Screen.DisplayWarningMessage("Attempts Limit Reached.");
+                AtmScreen.DisplayWarningMessage("Attempts Limit Reached.");
                 return null;
             }
             int choice = InteractiveMenuSelector.InteractiveMenu();
             if (choice == 1)
             {
-                Screen.DisplayHighlitedText("Attempts Remaining: " + attemptsRemaining);
+                AtmScreen.DisplayHighlitedText("Attempts Remaining: " + attemptsRemaining);
                 goto start1;
             }
             else return null;
@@ -35,17 +35,17 @@ internal class CardReader: ICardReader
         {
             if(!char.IsDigit(cardNumber[i]))
             {
-                Screen.DisplayErrorMessage("Invalid Card Number");
+                AtmScreen.DisplayErrorMessage("Invalid Card Number");
                 attemptsRemaining--;
                 if (attemptsRemaining == 0)
                 {
-                    Screen.DisplayWarningMessage("Attempts Limit Reached.");
+                    AtmScreen.DisplayWarningMessage("Attempts Limit Reached.");
                     return null;
                 }
                 int choice = InteractiveMenuSelector.InteractiveMenu();
                 if (choice == 1)
                 {
-                    Screen.DisplayHighlitedText("Attempts Remaining: " + attemptsRemaining);
+                    AtmScreen.DisplayHighlitedText("Attempts Remaining: " + attemptsRemaining);
                     goto start1;
                 }
                 else return null;
@@ -54,43 +54,43 @@ internal class CardReader: ICardReader
         long cardNo;
         if(!long.TryParse(cardNumber, out cardNo))
         {
-            Screen.DisplayErrorMessage("Invalid Card Number");
+            AtmScreen.DisplayErrorMessage("Invalid Card Number");
             return null;
         }
         attemptsRemaining = 3;
         start2:
-        Screen.DisplayMessage("Enter Pin");
+        AtmScreen.DisplayMessage("Enter Pin");
         var input= Keypad.ReadSenstiveData();
         int pin;
         if (!Int32.TryParse(input, out pin))
         {
-            Screen.DisplayErrorMessage("Invalid Pin");
+            AtmScreen.DisplayErrorMessage("Invalid Pin");
             attemptsRemaining--;
             if (attemptsRemaining == 0)
             {
-                Screen.DisplayWarningMessage("Attempts Limit Reached.");
+                AtmScreen.DisplayWarningMessage("Attempts Limit Reached.");
                 return null;
             }
             var choice = InteractiveMenuSelector.InteractiveMenu();
             if (choice == 1)
             {
-                Screen.DisplayHighlitedText("Attempts Remaining: " + attemptsRemaining);
+                AtmScreen.DisplayHighlitedText("Attempts Remaining: " + attemptsRemaining);
                 goto start2;
             }
             else return null;
         }
         if(pin < 1000 || pin > 9999)
         {
-            Screen.DisplayErrorMessage("Enter pin between range 1000 to 9999");
+            AtmScreen.DisplayErrorMessage("Enter pin between range 1000 to 9999");
             if (attemptsRemaining == 0)
             {
-                Screen.DisplayWarningMessage("Attempts Limit Reached.");
+                AtmScreen.DisplayWarningMessage("Attempts Limit Reached.");
                 return null;
             }
             var choice = InteractiveMenuSelector.InteractiveMenu();
             if (choice == 1)
             {
-                Screen.DisplayHighlitedText("Attempts Remaining: " + attemptsRemaining);
+                AtmScreen.DisplayHighlitedText("Attempts Remaining: " + attemptsRemaining);
                 goto start2;
             }
             else return null;

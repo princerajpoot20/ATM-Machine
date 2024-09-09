@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ATM_Machine.src.Logger;
+﻿namespace ATM_Machine.src.Logger;
 
 public class Logger
 {
@@ -25,7 +19,7 @@ public class Logger
         }
         catch (UnauthorizedAccessException ex)
         {
-            // When access C Drive file without adminstration permission
+            // When access C Drive file without administration permission
             Console.WriteLine($"Access violation: {ex.Message}");
         }
         catch (Exception ex)

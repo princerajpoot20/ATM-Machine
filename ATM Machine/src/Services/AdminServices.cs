@@ -32,7 +32,7 @@ internal class AdminServices : AdminDetails
         {
             return AdminServices.getAdminServiceInstance(admin);
         }
-        Screen.DisplayWarningMessage("Admin authentication failed. :(");
+        AtmScreen.DisplayWarningMessage("Admin authentication failed. :(");
         return null;
     }
 
@@ -40,11 +40,11 @@ internal class AdminServices : AdminDetails
     // This will also needed for loggin admin activity.
     internal void SetAtmState(ATM atm)
     {
-        Console.WriteLine("Currently Atm state is now: "+ atm.atmState);
-        Console.WriteLine("Do you want to change?");
-        Console.WriteLine("Press Enter for YES, otherwise press any key");
-        ConsoleKeyInfo keyInfo = Console.ReadKey();
-        if (keyInfo.Key == ConsoleKey.Enter)
+        Console.Write("Currently Atm state is now: ");
+        AtmScreen.DisplayHighlitedText($"{atm.atmState}");
+        Console.WriteLine("Please confirm, Do you want to change state?");
+        var choice = InteractiveMenuSelector.YesNo();
+        if (choice==1)
         {
             if(atm.atmState == AtmState.OutOfService)
             {
@@ -54,10 +54,17 @@ internal class AdminServices : AdminDetails
             {
                 atm.atmState = AtmState.OutOfService;
             }
-            Console.WriteLine("Atm state changed to: "+ atm.atmState);
+            AtmScreen.DisplayHighlitedText("Atm state changed to: "+ atm.atmState);
             AtmDetails.updateAtmDetails(atm);
             Logger.Logger.LogMessage($"{_admin} Changed the Atm State");
+            Console.Write("Restarting in ");
+            WaitTimer.Wait(4);
+            Environment.Exit(0);
+            return;
+
         }
+
+        return;
     }
     internal void UpdateCashStorage()
     {
@@ -65,14 +72,15 @@ internal class AdminServices : AdminDetails
         Dictionary<CurrencyDenomination,int>cash = new Dictionary<CurrencyDenomination, int>();
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {
-            Console.WriteLine("Enter the updated quantity of notes of: {0}", denomination);
-            bool isVerified = InputValidator.ReadInteger(out int count, Console.GetCursorPosition(), 0);
-            if(!isVerified)
+            //Console.WriteLine("Enter the updated quantity of notes of: {0}", denomination);
+            bool isValid = Keypad.ReadInteger(out int count, Console.GetCursorPosition(), 0, 500, 2, $"Enter the updated quantity of notes of: {denomination}");
+
+            if (!isValid)
                 return;
             cash[denomination] = count;
         }
         CashDetails.UpdateCashStorage(cash);
-        Screen.DisplaySuccessMessage("Cash Storage updated :)");
+        AtmScreen.DisplaySuccessMessage("Cash Storage updated :)");
         Logger.Logger.LogMessage($"{_admin} Updated the Cash Storage");
     }
 }

@@ -32,12 +32,12 @@ namespace ATM_Machine.UI {
         public static void ShowHomeMenu()
         {
             Console.Clear();
-            Screen.DisplayHeading("                                  Welcome to ATM                                  ");
+            AtmScreen.DisplayHeading("                                  Welcome to ATM                                  ");
             if (_atm.atmState == AtmState.OutOfService)
             {
-                Screen.DisplayHighlitedText("Sorry!! ATM is Out of Service");
-                Screen.DisplayHighlitedText("Hope to see you again! :)");
-                Screen.DisplayHighlitedText("Press Any key to exit");
+                AtmScreen.DisplayHighlitedText("Sorry!! ATM is Out of Service");
+                AtmScreen.DisplaySuccessMessage("\n\nHope to see you again! :)");
+                Console.CursorVisible = false;
                 ConsoleKeyInfo adminRedirect = Console.ReadKey();
                 if(adminRedirect.Key == ConsoleKey.Escape)
                 {
@@ -45,7 +45,7 @@ namespace ATM_Machine.UI {
                 }
                 return;
             }
-            Screen.DisplayHighlitedText("\nPress any key to begin!");
+            AtmScreen.DisplayHighlitedText("\nPress any key to begin!");
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             if (keyInfo.Key == ConsoleKey.Escape)
             {
@@ -90,7 +90,7 @@ namespace ATM_Machine.UI {
         public static void UserServicesMenu()
         {
             Console.Clear();
-            Screen.DisplayHeading($"                                  Welcome {_accountService.GetAccountHolderName()}!                                  ");
+            AtmScreen.DisplayHeading($"                                  Welcome {_accountService.GetAccountHolderName()}!                                  ");
             string[] menu = new string[]
                         {
                 "Withdraw Cash",
@@ -103,7 +103,7 @@ namespace ATM_Machine.UI {
             switch (choice)
             {
                 case 1:
-                    bool isValid = InputValidator.ReadInteger(out int amount, Console.GetCursorPosition(), 0, 100000,2, "Enter Amount to withdraw: ");
+                    bool isValid = Keypad.ReadInteger(out int amount, Console.GetCursorPosition(), 0, 100000,2, "Enter Amount to withdraw: ");
                     if (isValid)
                         _accountService.Withdraw(amount);
                     break;

@@ -25,16 +25,16 @@ namespace ATM_Machine.src.data
                 var data = line.Split(',');
                 if (data[0] == card.CardNumber && Convert.ToInt32(data[1]) == card.Pin)
                 {
-                    Screen.DisplaySuccessMessage("Card Details verified Successfully!! :)");
+                    AtmScreen.DisplaySuccessMessage("Card Details verified Successfully!! :)");
                     return true;
                 }
             }
 
-            Screen.DisplayWarningMessage("Card authentication failed. :(");
+            AtmScreen.DisplayWarningMessage("Card authentication failed. :(");
             return false;
         }
 
-        protected static string GetAccountNumber(Card card)
+        internal static string GetAccountNumber(Card card)
         {
             var lines = File.ReadAllLines(_cardAccountMappingPath);
             foreach (var line in lines)
@@ -49,7 +49,7 @@ namespace ATM_Machine.src.data
             return null;
         }
 
-        protected static Account GetAccountDetailsByAccountNumber(string accountNumber)
+        internal static Account GetAccountDetailsByAccountNumber(string accountNumber)
         {
             var lines = File.ReadAllLines(_accountDetailsPath);
             foreach (var line in lines)
@@ -63,14 +63,13 @@ namespace ATM_Machine.src.data
             return null;
         }
 
-        protected static void UpdateAccount(Account account)
+        internal static void UpdateAccount(Account account)
         {
             StringBuilder builder = new StringBuilder();
 
-            string line;
-            int updatedBalance = 0;
             using (StreamReader reader = new StreamReader(_accountDetailsPath))
             {
+                string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
 
@@ -88,7 +87,7 @@ namespace ATM_Machine.src.data
             }
         }
 
-        protected static void UpdateCard(Card card)
+        internal static void UpdateCard(Card card)
         {
             StringBuilder builder = new StringBuilder();
 
@@ -112,7 +111,7 @@ namespace ATM_Machine.src.data
                 writer.Write(builder.ToString());
             }
         }
-        protected static void UpdateMobileNumber(Account account, string newMobileNumber)
+        internal static void UpdateMobileNumber(Account account, string newMobileNumber)
         {
             Console.WriteLine("Need to implement this");
         }

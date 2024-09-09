@@ -5,11 +5,11 @@ public class Card
     internal string CardNumber { get; private set; }
     // used private set to make the property immutable.
     // It can now only be set through constructor 
-    internal int Pin { get; private set; }
+    internal int Pin;
+
     public Card(string cardNumber, int pin)
     {
         CardNumber = cardNumber;
         Pin = pin;
     }
-
 }

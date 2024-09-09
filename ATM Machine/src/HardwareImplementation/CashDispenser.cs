@@ -23,7 +23,7 @@ internal class CashDispenser : ICashDispenser
 
         return true;
     }
-    internal bool DispenseCash(int amount)
+    public bool DispenseCash(int amount)
     {
         // need to fix this. we need to sort this in descending order as we need higher denomination first.
         //Fixed Done. :)
@@ -54,16 +54,16 @@ internal class CashDispenser : ICashDispenser
         return Dispense(cash);
     }
 
-    internal int ReceiveCash()
+    public int ReceiveCash()
     {
-        Screen.DisplayHeading("Cash Dispenser");
+        AtmScreen.DisplayHeading("Cash Dispenser");
         Console.WriteLine("Enter Details of notes for deposition");
         Dictionary<CurrencyDenomination, int> cash = new Dictionary<CurrencyDenomination, int>();
         int totalAmount = 0;
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {
             var temp = $"Enter the quantity of notes {denomination}"; 
-            bool isValidInput = InputValidator.ReadInteger(out int count, Console.GetCursorPosition(), 0, 500, 2,temp);
+            bool isValidInput = Keypad.ReadInteger(out int count, Console.GetCursorPosition(), 0, 500, 2,temp);
             if (!isValidInput)
             {
                 return -1;
@@ -80,7 +80,7 @@ internal class CashDispenser : ICashDispenser
         WaitTimer.ProcessingWait(4);
         Console.WriteLine("\n----------------------------------");
         Console.WriteLine("\nTotal cash inserted in machine: {0}", totalAmount);
-        Screen.DisplayHighlitedText("\nPlease confirm the amount calculated");
+        AtmScreen.DisplayHighlitedText("\nPlease confirm the amount calculated");
 
         int choice= InteractiveMenuSelector.InteractiveMenu(new string[]
         {
@@ -90,7 +90,7 @@ internal class CashDispenser : ICashDispenser
 
         if (choice==2)
         {
-            Screen.DisplayHighlitedText("Returning cash back");
+            AtmScreen.DisplayHighlitedText("Returning cash back");
             bool isDispensed= Dispense(cash);
             if (!isDispensed)
             {
@@ -99,8 +99,8 @@ internal class CashDispenser : ICashDispenser
                 Console.WriteLine("Please contact the branch. Sorry for inconvience.");
                 return 0;
             }
-            Screen.DisplaySuccessMessage("Cash returned successfully");
-            Screen.DisplayMessage("Transaction completed. No cash Deposited");
+            AtmScreen.DisplaySuccessMessage("Cash returned successfully");
+            AtmScreen.DisplayMessage("Transaction completed. No cash Deposited");
 
             return -2; // for cash not deposited
         }

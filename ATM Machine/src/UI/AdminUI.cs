@@ -2,6 +2,7 @@
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
 using ATM_Machine.src.Utils;
+using ATM_Machine.UI;
 
 namespace ATM_Machine.src.UI
 {
@@ -13,7 +14,7 @@ namespace ATM_Machine.src.UI
         {
             _atm = atm;
             Console.Clear();
-            Screen.DisplayHighlitedText("WWelcome to Admin Panel");
+            AtmScreen.DisplayHighlitedText("WWelcome to Admin Panel");
             adminVerification();
             if (_adminServices == null)
             {
@@ -21,7 +22,7 @@ namespace ATM_Machine.src.UI
                 WaitTimer.Wait(4);
                 return;
             }
-            Screen.DisplaySuccessMessage("Authentication Successful");
+            AtmScreen.DisplaySuccessMessage("Authentication Successful");
             Logger.Logger.LogMessage($"{_adminServices._admin.adminId} (Admin) Logged in Successful.");
             AdminFeatureList();
         }
@@ -46,9 +47,20 @@ namespace ATM_Machine.src.UI
                 case 3:
                     return;
                 default:
-                    Screen.DisplayWarningMessage("Invalid Choice. ");
+                    AtmScreen.DisplayWarningMessage("Invalid Choice. ");
                     break;
             }
+
+            AtmScreen.DisplayMessage("Do you want to perform another action?");
+            choice = InteractiveMenuSelector.YesNo();
+            switch (choice)
+            {
+                case 1:AdminFeatureList();
+                    break;
+                case 2: MainMenu.ShowHomeMenu();
+                    break;
+            }
+
         }
         internal static void adminVerification(int attemptsRemaining=2)
         {
@@ -57,37 +69,37 @@ namespace ATM_Machine.src.UI
             {
                 int choice = InteractiveMenuSelector.InteractiveMenu();
                 if (choice==2) return;
-                Screen.DisplayWarningMessage("Attempts Remaining: " + attemptsRemaining);
+                AtmScreen.DisplayWarningMessage("Attempts Remaining: " + attemptsRemaining);
                 adminVerification(attemptsRemaining - 1);
             }
             else if (_adminServices == null)
             {
-                Screen.DisplayErrorMessage("You have exceeded the maximum number of attempts.");
+                AtmScreen.DisplayErrorMessage("You have exceeded the maximum number of attempts.");
             }
         }
         public static void takeAdminDetails()
         {
-            Screen.DisplayMessage("Enter your admin id:");
+            AtmScreen.DisplayMessage("Enter your admin id:");
             var adminId = Console.ReadLine();
             adminId= adminId?.Trim();
             if (string.IsNullOrEmpty(adminId))
             {
-                Screen.DisplayErrorMessage("Admin Id cannot be empty.");
-                int retryChoice = InteractiveMenuSelector.InteractiveMenu();
-                if (retryChoice == 2) return;
-                takeAdminDetails();
+                AtmScreen.DisplayErrorMessage("Admin Id cannot be empty.");
+
+                return;
             }
+
             Console.WriteLine("Enter your admin pin:");
             var password = Keypad.ReadSenstiveData();
             bool isPin = int.TryParse(password, out int pin);
             if (!isPin)
             {
-                Screen.DisplayErrorMessage("Invalid Pin. Pin should be integral.");
+                AtmScreen.DisplayErrorMessage("Invalid Pin. Pin should be integral.");
                 return;
             }
             if(pin < 1000 || pin > 9999)
             {
-                Screen.DisplayErrorMessage("Invalid Pin. Pin should be of 4 digits.");
+                AtmScreen.DisplayErrorMessage("Invalid Pin. Pin should be of 4 digits.");
                 return;
             }
             _adminServices = AdminServices.VerifyAdmin(new Admin(adminId, pin));

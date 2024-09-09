@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="src\data\" />
-    <Folder Include="src\Database\" />
+    <Folder Include="src\Database Handler\" />
     <Folder Include="src\Services\" />
   </ItemGroup>
 

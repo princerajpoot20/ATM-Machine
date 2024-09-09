@@ -2,5 +2,5 @@
 
 internal interface IKeyPad
 {
-    String ReadKeyPad();
+    static abstract string ReadSenstiveData();
 }
