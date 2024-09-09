@@ -7,7 +7,7 @@ using ATM_Machine.src.Utils;
 
 namespace ATM_Machine.src.Services;
 
-internal class AdminServices : AdminDetails
+internal class AdminServices
     // AdminServices class is inherited from AdminDetails class.
     // Admin services cannot be operated without admin database connection.
 {
@@ -27,7 +27,7 @@ internal class AdminServices : AdminDetails
 
     internal static AdminServices VerifyAdmin(Admin admin)
     {
-        bool isVerified = VerifyAdminDetails(admin);
+        bool isVerified = AdminDetails.VerifyAdminDetails(admin);
         if (isVerified)
         {
             return AdminServices.getAdminServiceInstance(admin);

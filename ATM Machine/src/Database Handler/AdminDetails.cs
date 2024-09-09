@@ -8,7 +8,7 @@ namespace ATM_Machine.src.data
         private const string _adminDetailsPath =
             @"C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\ATM\ATM Machine\ATM Machine\src\Database\admin_details.csv";
 
-        protected static bool VerifyAdminDetails(Admin admin)
+        internal static bool VerifyAdminDetails(Admin admin)
         {
             var details = File.ReadAllLines(_adminDetailsPath);
             foreach (var detail in details)

@@ -12,7 +12,7 @@ namespace ATM_Machine.UI {
     {
         private static ICardReader _cardReader;
         private static Card _card;
-        private static AccountService _accountService;
+        //private static AccountService _accountService;
         private static ATM _atm;
         // atm id will remain same throught. 
         const int _atmId = 123;
@@ -62,14 +62,7 @@ namespace ATM_Machine.UI {
         {
             Console.Clear();
             _card = CardReader.ReadCard();
-            if (_card == null)
-            {
-                Console.Write("\nPlease collect your card ");
-                WaitTimer.Wait(5);
-                ShowHomeMenu();
-                return;
-            }
-            bool isVerified = CardAccountDetails.VerifyCardDetails(_card);
+            bool isVerified = CardSecurity.VerifyCard(_card);
             if (!isVerified)
             {
                 Console.Write("\nPlease collect your card ");
@@ -77,20 +70,35 @@ namespace ATM_Machine.UI {
                 ShowHomeMenu();
                 return;
             }
-            _accountService = AccountService.GetAccountServiceInstance(_card);
-            if (_accountService == null ) {
-                Console.Write("\nPlease collect your card ");
-                WaitTimer.Wait(5);
-                ShowHomeMenu();
-                return;
-            }
+            //if (_card == null)
+            //{
+            //    Console.Write("\nPlease collect your card ");
+            //    WaitTimer.Wait(5);
+            //    ShowHomeMenu();
+            //    return;
+            //}
+            //bool isVerified = CardAccountDetails.VerifyCardDetails(_card);
+            //if (!isVerified)
+            //{
+            //    Console.Write("\nPlease collect your card ");
+            //    WaitTimer.Wait(5);
+            //    ShowHomeMenu();
+            //    return;
+            //}
+            //_accountService = AccountService.GetAccountServiceInstance(_card);
+            //if (_accountService == null ) {
+            //    Console.Write("\nPlease collect your card ");
+            //    WaitTimer.Wait(5);
+            //    ShowHomeMenu();
+            //    return;
+            //}
             Console.Clear();
             UserServicesMenu();
         }
         public static void UserServicesMenu()
         {
             Console.Clear();
-            AtmScreen.DisplayHeading($"                                  Welcome {_accountService.GetAccountHolderName()}!                                  ");
+            AtmScreen.DisplayHeading($"                                  Welcome {Transaction.GetAccountHolderName(_card)}!                                  ");
             string[] menu = new string[]
                         {
                 "Withdraw Cash",
@@ -100,19 +108,26 @@ namespace ATM_Machine.UI {
                 "Exit"
             };
             int choice = InteractiveMenuSelector.InteractiveMenu(menu, 1, 5);
+            Transaction transaction;
             switch (choice)
             {
                 case 1:
-                    bool isValid = Keypad.ReadInteger(out int amount, Console.GetCursorPosition(), 0, 100000,2, "Enter Amount to withdraw: ");
-                    if (isValid)
-                        _accountService.Withdraw(amount);
+                    transaction= new Withdrawal(_card);
+                    transaction.Execute(); //runtime polymorphism
                     break;
                 case 2:
-                    _accountService.Deposit();
+                    transaction= new Deposit(_card);
+                    transaction.Execute();
+                    // this is runtime polymorphism
+                    //         ---------------------
                     break;
                 case 3:
-                    _accountService.CheckBalance();
+                    transaction= new BalanceInquiry(_card);
+                    transaction.Execute(); //runtime polymorphism
                     break;
+                // With the help of runtime polymorphism, we can achieve abstraction.
+                // Hiding the implementation details from the user.
+                // The user only knows that he is doing a transaction.
                 case 4:
                     ShowAccountServices();
                     break;
@@ -139,6 +154,7 @@ namespace ATM_Machine.UI {
         {
             Console.Clear();
             Console.WriteLine("Account Services");
+
             int choice = InteractiveMenuSelector.InteractiveMenu(new string[]
             {
                 "Change Pin",
@@ -147,7 +163,8 @@ namespace ATM_Machine.UI {
             switch (choice)
                 {
                     case 1:
-                        _accountService.PinChange(_card);
+                        CardSecurity cardSecurity = new PinUpdate(_card);
+                        cardSecurity.Execute();
                         break;
                     case 2:
                         return;
