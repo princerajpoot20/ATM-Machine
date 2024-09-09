@@ -4,7 +4,7 @@ namespace ATM_Machine.HardwareInterface;
 
 internal interface ICashDispenser
 {
-     bool DispenseCash(int amount);
-     int ReceiveCash();
+     static abstract bool DispenseCash(int amount);
+     static abstract int ReceiveCash();
 
 }

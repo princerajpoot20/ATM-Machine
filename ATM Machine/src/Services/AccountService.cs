@@ -11,7 +11,6 @@ namespace ATM_Machine.src.Services
      // it cannot cannot be exist as seperate entity.
     {
         private static Account? _account;
-        private static CashDispenser? _cashDispenser;
 
         private AccountService() { }
         internal static AccountService? GetAccountServiceInstance(Card card)
@@ -31,7 +30,6 @@ namespace ATM_Machine.src.Services
                 AtmScreen.DisplayWarningMessage("Account details not found");
                 return null;
             }
-            _cashDispenser = new CashDispenser(_account);
             return new AccountService();
         }
         internal void CheckBalance()
@@ -55,7 +53,7 @@ namespace ATM_Machine.src.Services
                 return false;
             }
 
-            if (_cashDispenser.DispenseCash(amount))
+            if (CashDispenser.DispenseCash(amount))
             {
                 _account.Balance -= amount;
                 CardAccountDetails.UpdateAccount(_account);
@@ -75,8 +73,8 @@ namespace ATM_Machine.src.Services
         }
         internal void Deposit()
         {
-            if (_account == null || _cashDispenser==null) return;
-            int amount= _cashDispenser.ReceiveCash();
+            if (_account == null) return;
+            int amount= CashDispenser.ReceiveCash();
             if (amount == -1)
             {
                 AtmScreen.DisplayWarningMessage("Cash Deposit Failed");

@@ -41,20 +41,20 @@ internal class AdminServices : AdminDetails
     internal void SetAtmState(ATM atm)
     {
         Console.Write("Currently Atm state is now: ");
-        AtmScreen.DisplayHighlitedText($"{atm.atmState}");
+        AtmScreen.DisplayHighlitedText($"{atm.AtmState}");
         Console.WriteLine("Please confirm, Do you want to change state?");
         var choice = InteractiveMenuSelector.YesNo();
         if (choice==1)
         {
-            if(atm.atmState == AtmState.OutOfService)
+            if(atm.AtmState == AtmState.OutOfService)
             {
-                atm.atmState = AtmState.InService;
+                atm.AtmState = AtmState.InService;
             }
             else
             {
-                atm.atmState = AtmState.OutOfService;
+                atm.AtmState = AtmState.OutOfService;
             }
-            AtmScreen.DisplayHighlitedText("Atm state changed to: "+ atm.atmState);
+            AtmScreen.DisplayHighlitedText("Atm state changed to: "+ atm.AtmState);
             AtmDetails.updateAtmDetails(atm);
             Logger.Logger.LogMessage($"{_admin} Changed the Atm State");
             Console.Write("Restarting in ");

@@ -7,12 +7,7 @@ namespace ATM_Machine.HardwareImplementation;
 
 internal class CashDispenser : ICashDispenser
 {
-    private Account _account;
-    public CashDispenser(Account account)
-    {
-        _account = account;
-    }
-    public bool Dispense(Dictionary<CurrencyDenomination, int> cash)
+    private static bool Dispense(Dictionary<CurrencyDenomination, int> cash)
     {
         Console.WriteLine("\n-----Dispensing Cash-----");
         foreach (var currency in cash)
@@ -23,7 +18,7 @@ internal class CashDispenser : ICashDispenser
 
         return true;
     }
-    public bool DispenseCash(int amount)
+    public static bool DispenseCash(int amount)
     {
         // need to fix this. we need to sort this in descending order as we need higher denomination first.
         //Fixed Done. :)
@@ -51,10 +46,10 @@ internal class CashDispenser : ICashDispenser
             return false;
         }
 
-        return Dispense(cash);
+        return CashDispenser.Dispense(cash);
     }
 
-    public int ReceiveCash()
+    public static int ReceiveCash()
     {
         AtmScreen.DisplayHeading("Cash Dispenser");
         Console.WriteLine("Enter Details of notes for deposition");

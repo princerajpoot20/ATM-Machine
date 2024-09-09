@@ -33,7 +33,7 @@ namespace ATM_Machine.UI {
         {
             Console.Clear();
             AtmScreen.DisplayHeading("                                  Welcome to ATM                                  ");
-            if (_atm.atmState == AtmState.OutOfService)
+            if (_atm.AtmState == AtmState.OutOfService)
             {
                 AtmScreen.DisplayHighlitedText("Sorry!! ATM is Out of Service");
                 AtmScreen.DisplaySuccessMessage("\n\nHope to see you again! :)");

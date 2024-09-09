@@ -15,14 +15,17 @@ namespace ATM_Machine.src.UI
             _atm = atm;
             Console.Clear();
             AtmScreen.DisplayHighlitedText("WWelcome to Admin Panel");
-            adminVerification();
+            var cursor = Console.GetCursorPosition();
+            adminVerification(cursor);
             if (_adminServices == null)
             {
                 Console.Write("Returning to home in ");
                 WaitTimer.Wait(4);
                 return;
             }
-            AtmScreen.DisplaySuccessMessage("Authentication Successful");
+            Console.Clear();
+            AtmScreen.DisplayHighlitedText($"Welcome {_adminServices._admin.adminId}");
+
             Logger.Logger.LogMessage($"{_adminServices._admin.adminId} (Admin) Logged in Successful.");
             AdminFeatureList();
         }
@@ -62,15 +65,18 @@ namespace ATM_Machine.src.UI
             }
 
         }
-        internal static void adminVerification(int attemptsRemaining=2)
+        internal static void adminVerification((int left, int top) cursor, int attemptsRemaining = 2)
         {
             takeAdminDetails();
             if (_adminServices == null && attemptsRemaining > 0)
             {
                 int choice = InteractiveMenuSelector.InteractiveMenu();
                 if (choice==2) return;
+                Console.SetCursorPosition(cursor.left, cursor.top);
+                for(int i=0;i<10;i++) Console.WriteLine("                                                                                    ");
+                Console.SetCursorPosition(cursor.left, cursor.top);
                 AtmScreen.DisplayWarningMessage("Attempts Remaining: " + attemptsRemaining);
-                adminVerification(attemptsRemaining - 1);
+                adminVerification(cursor, attemptsRemaining - 1);
             }
             else if (_adminServices == null)
             {
@@ -79,6 +85,7 @@ namespace ATM_Machine.src.UI
         }
         public static void takeAdminDetails()
         {
+            //Console.SetCursorPosition(cursor.left,cursor.top);
             AtmScreen.DisplayMessage("Enter your admin id:");
             var adminId = Console.ReadLine();
             adminId= adminId?.Trim();

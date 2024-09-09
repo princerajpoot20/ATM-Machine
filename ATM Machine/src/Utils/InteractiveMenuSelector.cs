@@ -8,7 +8,8 @@ namespace ATM_Machine.src.Utils
 {
     internal class InteractiveMenuSelector
     {
-
+        //             Polymorphism
+        // Here, this Interactive menu has 2 form, with parameter and without parameter.
         public static int InteractiveMenu(string[] menu, int start, int end, string message="")
         {
             Console.OutputEncoding = Encoding.UTF8; // for emoji :)

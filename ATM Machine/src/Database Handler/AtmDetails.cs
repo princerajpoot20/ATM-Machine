@@ -38,9 +38,9 @@ public class AtmDetails
             while ((line = reader.ReadLine()) != null)
             {
                 var data = line.Split(',');
-                if (Convert.ToInt32(data[0]) == atm.AtmID)
+                if (Convert.ToInt32(data[0]) == atm.AtmId)
                 {
-                    line = atm.AtmID + "," + atm.atmState + "," + atm.atmLocation;
+                    line = atm.AtmId + "," + atm.AtmState + "," + atm.AtmLocation;
                 }
                 builder.AppendLine(line);
             }
