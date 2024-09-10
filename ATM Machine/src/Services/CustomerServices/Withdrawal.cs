@@ -3,17 +3,17 @@ using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Utils;
 
-namespace ATM_Machine.src.Services;
+namespace ATM_Machine.src.Services.CustomerServices;
 
-internal class Withdrawal: Transaction
+internal class Withdrawal : Transaction
 {
-    internal Withdrawal(Card card): base(card)
+    internal Withdrawal(Card card) : base(card)
     {
 
     }
     internal override void Execute()
     {
-        if(account == null) return;
+        if (account == null) return;
         bool isValid = Keypad.ReadInteger(out int amount, Console.GetCursorPosition(), 0, 100000, 2, "Enter Amount to withdraw: ");
         if (!isValid)
         {

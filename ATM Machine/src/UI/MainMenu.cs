@@ -1,10 +1,12 @@
 ﻿using ATM_Machine.HardwareImplementation;
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
+using ATM_Machine.src.Services.CustomerServices;
 using ATM_Machine.src.UI;
 using ATM_Machine.src.Utils;
 
-namespace ATM_Machine.UI { 
+namespace ATM_Machine.UI
+{
     public class MainMenu
     {
         private static Card? _card;

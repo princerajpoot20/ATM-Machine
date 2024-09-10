@@ -1,6 +1,6 @@
 ﻿using ATM_Machine.src.Models;
 
-namespace ATM_Machine.src.Services;
+namespace ATM_Machine.src.Services.AdminServices;
 
 internal abstract class Administration
 {
@@ -12,7 +12,7 @@ internal abstract class Administration
     // Important Note:: Protected constructor cannot be accessed from derived class method
 
     {
-        this.admin= admin;
+        this.admin = admin;
     }
 
     internal abstract void Execute();

@@ -2,7 +2,7 @@
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 
-namespace ATM_Machine.src.Services;
+namespace ATM_Machine.src.Services.CustomerServices;
 
 internal abstract class Transaction
 // abstract class
@@ -18,9 +18,9 @@ internal abstract class Transaction
     protected Account? account;
 
     protected Transaction(Card card)
-        // Protected constructor
-        // It can only be accessed by derived class constructor.
-        // Important Note:: Protected constructor cannot be accessed from derived class method
+    // Protected constructor
+    // It can only be accessed by derived class constructor.
+    // Important Note:: Protected constructor cannot be accessed from derived class method
 
     {
         var accountNumber = CardAccountDetails.GetAccountNumber(card);
@@ -29,14 +29,14 @@ internal abstract class Transaction
         {
             Logger.Logger.LogMessage($"{card.CardNumber} Failed!! Card is not linked to any account");
             AtmScreen.DisplayWarningMessage("Card is not linked to any account");
-            throw new System.Exception("Card is not linked to any account");
+            throw new Exception("Card is not linked to any account");
         }
         account = CardAccountDetails.GetAccountDetailsByAccountNumber(accountNumber);
         if (account == null)
         {
             Logger.Logger.LogMessage($"{card.CardNumber} Failed!! Account details not found");
             AtmScreen.DisplayWarningMessage("Account details not found");
-            throw new System.Exception("Account details not found");
+            throw new Exception("Account details not found");
         }
     }
 

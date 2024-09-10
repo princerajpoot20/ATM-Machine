@@ -1,10 +1,4 @@
-﻿using ATM_Machine.HardwareImplementation;
-using ATM_Machine.HardwareInterface;
-using ATM_Machine.src.data;
-using ATM_Machine.src.Models;
-using ATM_Machine.src.Services;
-using ATM_Machine.src.Utils;
-using ATM_Machine.UI;
+﻿using ATM_Machine.UI;
 
 class Program
 {

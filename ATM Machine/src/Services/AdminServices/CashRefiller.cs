@@ -2,7 +2,7 @@
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 
-namespace ATM_Machine.src.Services;
+namespace ATM_Machine.src.Services.AdminServices;
 
 internal class CashRefiller : Administration
 {
@@ -12,7 +12,7 @@ internal class CashRefiller : Administration
     }
     internal override void Execute()
     {
-        AtmScreen.DisplayHighlitedText("\nCash Storage");
+        MonitorScreen.DisplayHighlitedText("\nCash Storage");
         Dictionary<CurrencyDenomination, int> cash = new Dictionary<CurrencyDenomination, int>();
         foreach (CurrencyDenomination denomination in Enum.GetValues(typeof(CurrencyDenomination)))
         {

@@ -2,7 +2,7 @@
 using ATM_Machine.src.Models;
 using System.Security.Principal;
 
-namespace ATM_Machine.src.Services;
+namespace ATM_Machine.src.Services.CustomerServices;
 
 internal class BalanceInquiry : Transaction
 {
@@ -12,7 +12,7 @@ internal class BalanceInquiry : Transaction
     internal override void Execute()
     {
         if (account == null) return;
-        AtmScreen.DisplayMessage("Your Current Balance is: " + account.Balance);
+        MonitorScreen.DisplayMessage("Your Current Balance is: " + account.Balance);
         Logger.Logger.LogMessage($"{account.AccountNumber} Checked account balance");
     }
 }

@@ -3,7 +3,7 @@ using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Utils;
 
-namespace ATM_Machine.src.Services;
+namespace ATM_Machine.src.Services.AdminServices;
 
 internal class AtmStateManager : Administration
 {
@@ -15,7 +15,7 @@ internal class AtmStateManager : Administration
     {
         ATM atm = ATM.getAtmInstance();
         Console.Write("Currently Atm state is now: ");
-        AtmScreen.DisplayHighlitedText($"{atm.AtmState}");
+        MonitorScreen.DisplayHighlitedText($"{atm.AtmState}");
         Console.WriteLine("Please confirm, Do you want to change state?");
         var choice = InteractiveMenuSelector.YesNo();
         if (choice == 1)
@@ -28,12 +28,12 @@ internal class AtmStateManager : Administration
             {
                 atm.AtmState = AtmState.OutOfService;
             }
-            AtmScreen.DisplayHighlitedText("Atm state changed to: " + atm.AtmState);
+            MonitorScreen.DisplayHighlitedText("Atm state changed to: " + atm.AtmState);
             AtmDetails.updateAtmDetails(atm);
             Logger.Logger.LogMessage($"{admin} Changed the Atm State");
             Console.Write("Restarting in ");
             WaitTimer.Wait(4);
-            Environment.Exit(0); 
+            Environment.Exit(0);
         }
     }
 }

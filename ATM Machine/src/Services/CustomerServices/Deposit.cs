@@ -2,11 +2,11 @@
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 
-namespace ATM_Machine.src.Services;
+namespace ATM_Machine.src.Services.CustomerServices;
 
 internal class Deposit : Transaction
 {
-    internal Deposit(Card card): base(card)
+    internal Deposit(Card card) : base(card)
     {
     }
     internal override void Execute()

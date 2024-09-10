@@ -2,7 +2,7 @@
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Utils;
 
-namespace ATM_Machine.src.Services;
+namespace ATM_Machine.src.Services.CustomerServices;
 
 internal abstract class CardSecurity
 // this cardsecurity can further be used to implement more features
@@ -18,7 +18,7 @@ internal abstract class CardSecurity
     }
     internal static bool VerifyCard(Card card)
     {
-        if (card == null) return false; 
+        if (card == null) return false;
         return CardAccountDetails.VerifyCardDetails(card);
     }
 
