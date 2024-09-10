@@ -1,21 +1,16 @@
 ﻿using ATM_Machine.HardwareImplementation;
-using ATM_Machine.HardwareInterface;
-using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
 using ATM_Machine.src.Services;
 using ATM_Machine.src.UI;
 using ATM_Machine.src.Utils;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace ATM_Machine.UI { 
     public class MainMenu
     {
-        private static ICardReader _cardReader;
-        private static Card _card;
-        //private static AccountService _accountService;
+        private static Card? _card;
         private static ATM _atm;
-        // atm id will remain same throught. 
-        const int _atmId = 123;
+        // atm id will remain same throughout. 
+        const int AtmId = 123;
         internal MainMenu(ATM atm)
         {
             _atm = atm;
@@ -26,8 +21,7 @@ namespace ATM_Machine.UI {
              // will get automatically called when the class is loaded
              // This will be used to maintain atm specific tasks/activity
              // Like checking if this atm is out of service or not.
-            _atm = ATM.getAtmInstance(_atmId);
-            
+            _atm = ATM.getAtmInstance(AtmId);
         }
         public static void ShowHomeMenu()
         {
@@ -41,7 +35,7 @@ namespace ATM_Machine.UI {
                 ConsoleKeyInfo adminRedirect = Console.ReadKey();
                 if(adminRedirect.Key == ConsoleKey.Escape)
                 {
-                    AdminUI.AdminMenu(_atm);
+                    AdminUI.AdminMenu();
                 }
                 return;
             }
@@ -49,7 +43,7 @@ namespace ATM_Machine.UI {
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             if (keyInfo.Key == ConsoleKey.Escape)
             {
-                AdminUI.AdminMenu(_atm);
+                AdminUI.AdminMenu();
                 ShowHomeMenu();
                 return;
             }
@@ -70,28 +64,6 @@ namespace ATM_Machine.UI {
                 ShowHomeMenu();
                 return;
             }
-            //if (_card == null)
-            //{
-            //    Console.Write("\nPlease collect your card ");
-            //    WaitTimer.Wait(5);
-            //    ShowHomeMenu();
-            //    return;
-            //}
-            //bool isVerified = CardAccountDetails.VerifyCardDetails(_card);
-            //if (!isVerified)
-            //{
-            //    Console.Write("\nPlease collect your card ");
-            //    WaitTimer.Wait(5);
-            //    ShowHomeMenu();
-            //    return;
-            //}
-            //_accountService = AccountService.GetAccountServiceInstance(_card);
-            //if (_accountService == null ) {
-            //    Console.Write("\nPlease collect your card ");
-            //    WaitTimer.Wait(5);
-            //    ShowHomeMenu();
-            //    return;
-            //}
             Console.Clear();
             UserServicesMenu();
         }

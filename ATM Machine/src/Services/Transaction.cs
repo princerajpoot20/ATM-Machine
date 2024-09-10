@@ -18,6 +18,10 @@ internal abstract class Transaction
     protected Account? account;
 
     protected Transaction(Card card)
+        // Protected constructor
+        // It can only be accessed by derived class constructor.
+        // Important Note:: Protected constructor cannot be accessed from derived class method
+
     {
         var accountNumber = CardAccountDetails.GetAccountNumber(card);
 

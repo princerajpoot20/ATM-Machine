@@ -1,7 +1,6 @@
 ﻿using ATM_Machine.HardwareImplementation;
 using ATM_Machine.src.data;
 using ATM_Machine.src.Models;
-using System.Security.Principal;
 
 namespace ATM_Machine.src.Services;
 
