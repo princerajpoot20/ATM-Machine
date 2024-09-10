@@ -72,7 +72,10 @@ class Program
 
         //Console.WriteLine(InteractiveMenuSelector.InteractiveMenu(menu, 1,4));
         //(ATM.getAtmInstance(123));
-        
+        //Admin.VerifyAdmin();
+
+
+
         MainMenu.ShowHomeMenu();
     }
 }

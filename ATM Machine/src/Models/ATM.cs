@@ -7,6 +7,7 @@ public struct ATM
     internal int AtmId;
     internal AtmState AtmState;
     internal string AtmLocation;
+    private static ATM _ATM;
     internal ATM(int AtmID, AtmState atmState, string atmLocation)
     {
         this.AtmId = AtmID;
@@ -14,9 +15,10 @@ public struct ATM
         this.AtmLocation = atmLocation;
     }
 
-    internal static ATM getAtmInstance(int atmId)
+    internal static ATM getAtmInstance(int atmId=123)
     {
-        return AtmDetails.getAtmDetails(atmId);
+        _ATM = AtmDetails.getAtmDetails(atmId);
+        return _ATM;
     }
 
 
