@@ -61,7 +61,7 @@ namespace ATM_Machine.src.UI
             {
                 case 1:AdminFeatureList();
                     break;
-                case 2: MainMenu.ShowHomeMenu();
+                case 2: new MainMenu(ATM.getAtmInstance(123)).ShowHomeMenu();
                     break;
             }
         }

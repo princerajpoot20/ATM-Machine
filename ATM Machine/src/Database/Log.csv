@@ -105,3 +105,11 @@
 9/11/2024 9:17:51 AM, 123456 Withdraw 52 successful
 9/11/2024 10:07:33 AM, admin (Administration) Logged in Successful.
 9/11/2024 10:07:36 AM, ATM_Machine.src.Models.Admin Changed the Atm State
+9/12/2024 11:57:48 AM, admin (Administration) Logged in Successful.
+9/12/2024 11:57:52 AM, ATM_Machine.src.Models.Admin Changed the Atm State
+9/12/2024 2:12:54 PM, 123456 Withdraw 49 successful
+9/12/2024 2:13:25 PM, 123456 Checked account balance
+9/12/2024 2:13:51 PM, 123456 Withdraw 294 successful
+9/12/2024 2:14:18 PM, 123456 Checked account balance
+9/12/2024 2:33:24 PM, 123456 Checked account balance
+9/12/2024 2:33:30 PM, 123456 Amount deposited failed. No cash collected

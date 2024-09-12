@@ -17,15 +17,15 @@ namespace ATM_Machine.UI
         {
             _atm = atm;
         }
-        static MainMenu()
-        {
-             // Static constructor to initialize the ATM instance
-             // will get automatically called when the class is loaded
-             // This will be used to maintain atm specific tasks/activity
-             // Like checking if this atm is out of service or not.
-            _atm = ATM.getAtmInstance(AtmId);
-        }
-        public static void ShowHomeMenu()
+        //static MainMenu()
+        //{
+        //     // Static constructor to initialize the ATM instance
+        //     // will get automatically called when the class is loaded
+        //     // This will be used to maintain atm specific tasks/activity
+        //     // Like checking if this atm is out of service or not.
+            
+        //}
+        public void ShowHomeMenu()
         {
             Console.Clear();
             AtmScreen.DisplayHeading("                                  Welcome to ATM                                  ");
@@ -54,7 +54,7 @@ namespace ATM_Machine.UI
             UserMenu();
         }
 
-        internal static void UserMenu()
+        internal void UserMenu()
         {
             Console.Clear();
             _card = CardReader.ReadCard();
@@ -69,7 +69,7 @@ namespace ATM_Machine.UI
             Console.Clear();
             UserServicesMenu();
         }
-        public static void UserServicesMenu()
+        public void UserServicesMenu()
         {
             Console.Clear();
             AtmScreen.DisplayHeading($"                                  Welcome {Transaction.GetAccountHolderName(_card)}!                                  ");
@@ -124,7 +124,7 @@ namespace ATM_Machine.UI
             }
             UserServicesMenu();
         }
-        public static void ShowAccountServices()
+        public void ShowAccountServices()
         {
             Console.Clear();
             Console.WriteLine("Account Services");
