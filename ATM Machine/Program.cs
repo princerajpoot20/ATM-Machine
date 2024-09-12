@@ -2,7 +2,7 @@
 
 class Program
 {
-    static void Main()
+    internal static void Main()
     {
         // Admin Testing
         //var adminServices = new AdminServices();

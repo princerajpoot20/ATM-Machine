@@ -33,6 +33,7 @@ internal class AtmStateManager : Administration
             Logger.Logger.LogMessage($"{admin} Changed the Atm State");
             Console.Write("Restarting in ");
             WaitTimer.Wait(4);
+            //Program.Main();
             Environment.Exit(0);
         }
     }

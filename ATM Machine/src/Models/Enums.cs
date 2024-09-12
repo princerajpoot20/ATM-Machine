@@ -8,6 +8,7 @@ public enum AtmState
 
 public enum CurrencyDenomination
 {
+    One = 1,
     Fifty =50,
     OneHundred= 100,
     TwoHundred= 200,
