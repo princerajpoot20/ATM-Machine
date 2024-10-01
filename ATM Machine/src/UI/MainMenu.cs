@@ -1,6 +1,5 @@
 ﻿using ATM_Machine.HardwareImplementation;
 using ATM_Machine.src.Models;
-using ATM_Machine.src.Services;
 using ATM_Machine.src.Services.CustomerServices;
 using ATM_Machine.src.UI;
 using ATM_Machine.src.Utils;
@@ -9,10 +8,12 @@ namespace ATM_Machine.UI
 {
     public class MainMenu
     {
+
         private static Card? _card;
         private static ATM _atm;
         // atm id will remain same throughout. 
         const int AtmId = 123;
+        private AdminUI _adminUI;
         internal MainMenu(ATM atm)
         {
             _atm = atm;
@@ -37,7 +38,13 @@ namespace ATM_Machine.UI
                 ConsoleKeyInfo adminRedirect = Console.ReadKey();
                 if(adminRedirect.Key == ConsoleKey.Escape)
                 {
-                    AdminUI.AdminMenu();
+                    _adminUI = AdminUI.GetAdminMenuInstance();
+                    if (_adminUI == null)
+                    {
+                        ShowHomeMenu();
+                        return;
+                    }
+                    _adminUI.AdminFeatureList();
                 }
                 return;
             }
@@ -45,8 +52,14 @@ namespace ATM_Machine.UI
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             if (keyInfo.Key == ConsoleKey.Escape)
             {
-                AdminUI.AdminMenu();
-                ShowHomeMenu();
+                _adminUI = AdminUI.GetAdminMenuInstance();
+                if (_adminUI == null)
+                {
+                    ShowHomeMenu();
+                    return;
+                }
+                _adminUI.AdminFeatureList();
+                ShowHomeMenu();// after admin menu return to home
                 return;
             }
             Console.SetCursorPosition(0, Console.CursorTop - 2);
@@ -105,6 +118,9 @@ namespace ATM_Machine.UI
                 case 4:
                     ShowAccountServices();
                     break;
+                //case 5:
+                //    //DenominationChecker.();
+                //    return;
                 case 5:
                     ShowHomeMenu();
                     return;

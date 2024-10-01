@@ -5,21 +5,6 @@ namespace ATM_Machine.HardwareImplementation;
 //            Used inheritance here
 //  It is a "is a" relation. Every atm screen IS A Monitor Screen
 // Inheritance is used to inherit some common functionality.
- public class MonitorScreen
-{
-    internal static void DisplayMessage(string s)
-    {
-        Console.WriteLine(s);
-    }
-
-    internal static void DisplayHighlitedText(string message)
-    {
-        Console.BackgroundColor = ConsoleColor.Yellow;
-        Console.ForegroundColor = ConsoleColor.Black;
-        Console.WriteLine(message);
-        Console.ResetColor();
-    }
-}
 public class AtmScreen : MonitorScreen
 {
     public static void DisplaySuccessMessage(string message)

@@ -5,7 +5,7 @@ using ATM_Machine.src.Utils;
 
 namespace ATM_Machine.HardwareImplementation;
 
-internal class CashDispenser : ICashDispenser
+internal class CashDispenser : ICashDispenser, IAvailableDenomination
 {
     private static bool Dispense(Dictionary<CurrencyDenomination, int> cash)
     {
@@ -100,5 +100,22 @@ internal class CashDispenser : ICashDispenser
             return -2; // for cash not deposited
         }
         return totalAmount;
+    }
+
+    public void ShowDenomination()
+    {
+        var denominations = Enum.GetValues(typeof(CurrencyDenomination)).Cast<CurrencyDenomination>().OrderByDescending(v => (int)v);
+        foreach (var denomination in denominations)
+        {
+            int available = CashDetails.GetCashCount(denomination);
+            if (available==0)
+            {
+                Console.WriteLine(denomination+" is not available at this movement.");
+            }
+            else
+            {
+                Console.WriteLine(denomination + " is available.");
+            }
+        }
     }
 }

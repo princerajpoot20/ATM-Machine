@@ -10,7 +10,13 @@ namespace ATM_Machine.src.UI
     internal class AdminUI
     {
         private static Admin? _admin;
-        internal static void AdminMenu()
+        private static AdminUI _adminUI;
+
+        private AdminUI()
+        {
+            // Instance cannot be created outside.
+        }
+        internal static AdminUI GetAdminMenuInstance()
         {
             Console.Clear();
             _admin= Admin.VerifyAdmin();
@@ -18,11 +24,14 @@ namespace ATM_Machine.src.UI
             {
                 Console.Write("Returning to home in ");
                 WaitTimer.Wait(4);
-                return;
+                return null;
             }
-            AdminFeatureList();
+
+            _adminUI = new AdminUI();
+            return _adminUI;
+            //AdminFeatureList();
         }
-        private static void AdminFeatureList()
+        internal void AdminFeatureList()
         // Private method: so that it can only be accessed inside this class.
         {
             Console.Clear();

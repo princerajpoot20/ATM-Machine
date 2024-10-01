@@ -14,6 +14,7 @@ internal class Withdrawal : Transaction
     internal override void Execute()
     {
         if (account == null) return;
+
         bool isValid = Keypad.ReadInteger(out int amount, Console.GetCursorPosition(), 0, 100000, 2, "Enter Amount to withdraw: ");
         if (!isValid)
         {

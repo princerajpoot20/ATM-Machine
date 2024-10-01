@@ -26,7 +26,16 @@ public class CashDetails
     }
     internal static int GetCashCount(CurrencyDenomination denomination)
     {
-        var lines = File.ReadAllLines(_cashDetailsPath);
+        string[] lines;
+        try
+        {
+            lines = File.ReadAllLines(_cashDetailsPath);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("File error occured");
+        }
+
         foreach (var line in lines)
         {
             var data = line.Split(',');
