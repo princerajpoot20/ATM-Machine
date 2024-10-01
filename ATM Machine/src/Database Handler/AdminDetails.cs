@@ -10,7 +10,16 @@ namespace ATM_Machine.src.data
 
         internal static bool VerifyAdminDetails(Admin admin)
         {
-            var details = File.ReadAllLines(_adminDetailsPath);
+            string[] details;
+            try
+            {
+                details = File.ReadAllLines(_adminDetailsPath);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("File error occured");
+            }
+
             foreach (var detail in details)
             {
                 var data = detail.Split(',');

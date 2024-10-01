@@ -18,7 +18,15 @@ namespace ATM_Machine.src.data
 
         internal static bool VerifyCardDetails(Card card)
         {
-            var lines = File.ReadAllLines(_cardDetailsPath);
+            string[] lines;
+            try
+            {
+                lines = File.ReadAllLines(_cardDetailsPath);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("File error occured");
+            }
             lines = lines.Skip(1).ToArray();
             foreach (var line in lines)
             {
@@ -36,7 +44,17 @@ namespace ATM_Machine.src.data
 
         internal static string GetAccountNumber(Card card)
         {
-            var lines = File.ReadAllLines(_cardAccountMappingPath);
+            
+            string[] lines;
+            try
+            {
+                lines = File.ReadAllLines(_cardAccountMappingPath);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("File error occured");
+            }
+
             foreach (var line in lines)
             {
                 var data = line.Split(',');
@@ -51,7 +69,16 @@ namespace ATM_Machine.src.data
 
         internal static Account GetAccountDetailsByAccountNumber(string accountNumber)
         {
-            var lines = File.ReadAllLines(_accountDetailsPath);
+            string[] lines;
+            try
+            {
+                lines = File.ReadAllLines(_accountDetailsPath);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("File error occured");
+            }
+
             foreach (var line in lines)
             {
                 var data = line.Split(',');
@@ -66,21 +93,30 @@ namespace ATM_Machine.src.data
         internal static void UpdateAccount(Account account)
         {
             StringBuilder builder = new StringBuilder();
-
-            using (StreamReader reader = new StreamReader(_accountDetailsPath))
+            try
             {
-                string? line;
-                while ((line = reader.ReadLine()) != null)
+                using (StreamReader reader = new StreamReader(_accountDetailsPath))
                 {
-
-                    var data = line.Split(',');
-                    if (data[0] == account.AccountNumber)
+                    string? line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        line= account.AccountNumber + "," + account.Name + "," + account.MobileNumber + "," + account.Balance;
+
+                        var data = line.Split(',');
+                        if (data[0] == account.AccountNumber)
+                        {
+                            line = account.AccountNumber + "," + account.Name + "," + account.MobileNumber + "," +
+                                   account.Balance;
+                        }
+
+                        builder.AppendLine(line);
                     }
-                    builder.AppendLine(line);
                 }
             }
+            catch (Exception e)
+            {
+                throw new Exception("File error occured");
+            }
+
             using (StreamWriter writer = new StreamWriter(_accountDetailsPath, false)) // false to overwrite the file
             {
                 writer.Write(builder.ToString());
@@ -93,19 +129,28 @@ namespace ATM_Machine.src.data
 
             string line;
             int updatedBalance = 0;
-            using (StreamReader reader = new StreamReader(_cardDetailsPath))
+            try
             {
-                while ((line = reader.ReadLine()) != null)
+                using (StreamReader reader = new StreamReader(_cardDetailsPath))
                 {
-
-                    var data = line.Split(',');
-                    if (data[0] == card.CardNumber)
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        line= card.CardNumber + "," + card.Pin;
+
+                        var data = line.Split(',');
+                        if (data[0] == card.CardNumber)
+                        {
+                            line = card.CardNumber + "," + card.Pin;
+                        }
+
+                        builder.AppendLine(line);
                     }
-                    builder.AppendLine(line);
                 }
             }
+            catch (Exception e)
+            {
+                throw new Exception("File error occured");
+            }
+
             using (StreamWriter writer = new StreamWriter(_cardDetailsPath, false)) // false to overwrite the file
             {
                 writer.Write(builder.ToString());
@@ -116,5 +161,4 @@ namespace ATM_Machine.src.data
             Console.WriteLine("Need to implement this");
         }
     }
-    
 }

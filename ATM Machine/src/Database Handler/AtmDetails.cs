@@ -13,7 +13,16 @@ public class AtmDetails
     {
         AtmState atmState = AtmState.OutOfService;
         var location = "";
-        var details = File.ReadAllLines(_atmDetailsPath);
+        string[] details;
+        try
+        {
+            details = File.ReadAllLines(_atmDetailsPath);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("File error occured");
+        }
+
         foreach (var detail in details)
         {
             var data = detail.Split(',');
@@ -33,18 +42,27 @@ public class AtmDetails
         StringBuilder builder = new StringBuilder();
 
         string line;
-        using (StreamReader reader = new StreamReader(_atmDetailsPath))
+        try
         {
-            while ((line = reader.ReadLine()) != null)
+            using (StreamReader reader = new StreamReader(_atmDetailsPath))
             {
-                var data = line.Split(',');
-                if (Convert.ToInt32(data[0]) == atm.AtmId)
+                while ((line = reader.ReadLine()) != null)
                 {
-                    line = atm.AtmId + "," + atm.AtmState + "," + atm.AtmLocation;
+                    var data = line.Split(',');
+                    if (Convert.ToInt32(data[0]) == atm.AtmId)
+                    {
+                        line = atm.AtmId + "," + atm.AtmState + "," + atm.AtmLocation;
+                    }
+
+                    builder.AppendLine(line);
                 }
-                builder.AppendLine(line);
             }
         }
+        catch (Exception e)
+        {
+            throw new Exception("File error occured");
+        }
+
         using (StreamWriter writer = new StreamWriter(_atmDetailsPath, false)) // false to overwrite the file
         {
             writer.Write(builder.ToString());

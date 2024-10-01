@@ -56,27 +56,24 @@ internal class Admin: User
             if (choice == 2) return null;
             Console.Clear();
             AtmScreen.DisplayWarningMessage("Attempts Remaining: " + attemptsRemaining);
-            VerifyAdmin(cursor, attemptsRemaining - 1);
+            return VerifyAdmin(cursor, attemptsRemaining - 1);
         }
+
         else if (admin == null)
         {
             AtmScreen.DisplayErrorMessage("You have exceeded the maximum number of attempts.");
             return null;
         }
-        else if(admin!=null)
-        {
-            bool isVerified = AdminDetails.VerifyAdminDetails(admin);
-            if (!isVerified)
-            {
-                AtmScreen.DisplayWarningMessage("Admin authentication failed. :(");
-                return VerifyAdmin(cursor, attemptsRemaining - 1);
-            }
-            else
-            {
-                return admin;
-            }
 
+        bool isVerified = AdminDetails.VerifyAdminDetails(admin);
+        if (!isVerified)
+        {
+            AtmScreen.DisplayWarningMessage("Admin authentication failed. :(");
+            return VerifyAdmin(cursor, attemptsRemaining - 1);
         }
-        return null;
+        else
+        {
+            return admin;
+        }
     }
 }

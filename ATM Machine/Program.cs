@@ -1,4 +1,5 @@
-﻿using ATM_Machine.UI;
+﻿using ATM_Machine.src.Models;
+using ATM_Machine.UI;
 
 class Program
 {
@@ -68,8 +69,8 @@ class Program
         //(ATM.getAtmInstance(123));
         //Admin.VerifyAdmin();
 
+        MainMenu mainMenu = new MainMenu(ATM.getAtmInstance(123));
 
-
-        MainMenu.ShowHomeMenu();
+        mainMenu.ShowHomeMenu();
     }
 }
