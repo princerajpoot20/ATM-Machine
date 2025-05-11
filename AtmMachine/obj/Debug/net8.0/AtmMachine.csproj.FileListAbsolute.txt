@@ -1,0 +1,14 @@
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\AtmMachine.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\AtmMachine.AssemblyInfoInputs.cache
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\AtmMachine.AssemblyInfo.cs
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\AtmMachine.csproj.CoreCompileInputs.cache
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\bin\Debug\net8.0\AtmMachine.exe
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\bin\Debug\net8.0\AtmMachine.deps.json
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\bin\Debug\net8.0\AtmMachine.runtimeconfig.json
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\bin\Debug\net8.0\AtmMachine.dll
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\bin\Debug\net8.0\AtmMachine.pdb
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\AtmMachine.dll
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\refint\AtmMachine.dll
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\AtmMachine.pdb
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\AtmMachine.genruntimeconfig.cache
+C:\Users\prajpoot\OneDrive - WatchGuard Technologies Inc\Project\AtmMachine\AtmMachine\AtmMachine\obj\Debug\net8.0\ref\AtmMachine.dll
